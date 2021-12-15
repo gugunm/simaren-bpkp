@@ -242,7 +242,8 @@ export default {
 
     this.optionsSektor = await this.$store.dispatch('loadListSektor')
     // this.optionsDeputi = await this.$store.dispatch('loadListDeputi')
-    this.optionsRendal = await this.$store.dispatch('loadListRendal')
+    // this.optionsRendal = await this.$store.dispatch('loadListRendal')
+    this.optionsRendal = await this.$store.dispatch('loadListUnitKontributor')
 
     if (this.mode == 'update') {
       this.loading = true
