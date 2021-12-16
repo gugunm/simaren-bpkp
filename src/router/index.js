@@ -26,19 +26,19 @@ const routes = [
             path: '',
             name: 'Index Sektor',
             component: () => import('@/views/modules/sektor/index.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create Sektor',
             component: () => import('@/views/modules/sektor/Create.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: true },
           },
           {
             path: 'update/:idSektor',
             name: 'Update Sektor',
             component: () => import('@/views/modules/sektor/Update.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
             props: true,
           },
         ],
@@ -56,19 +56,19 @@ const routes = [
             path: '',
             name: '',
             component: () => import('@/views/modules/tema/index.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create Tema',
             component: () => import('@/views/modules/tema/Create.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: true },
           },
           {
             path: 'update/:idTema',
             name: 'Update Tema',
             component: () => import('@/views/modules/tema/Update.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
             props: true,
           },
         ],
@@ -86,19 +86,19 @@ const routes = [
             path: '',
             name: '',
             component: () => import('@/views/modules/topik/index.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create Topik',
             component: () => import('@/views/modules/topik/Create.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'update/:idTopik',
             name: 'Update Topik',
             component: () => import('@/views/modules/topik/Update.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
             props: true,
           },
         ],
@@ -116,19 +116,19 @@ const routes = [
             path: '',
             name: '',
             component: () => import('@/views/modules/kontributor/index.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create Kontributor',
             component: () => import('@/views/modules/kontributor/Create.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'update/:idKontributor',
             name: 'Update Kontributor',
             component: () => import('@/views/modules/kontributor/Update.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
             props: true,
           },
         ],
@@ -146,19 +146,19 @@ const routes = [
             path: '',
             name: '',
             component: () => import('@/views/modules/kap/index.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create KAP',
             component: () => import('@/views/modules/kap/Create.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'update/:idKap',
             name: 'Update KAP',
             component: () => import('@/views/modules/kap/Update.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
             props: true,
           },
         ],
@@ -176,19 +176,19 @@ const routes = [
             path: '',
             name: '',
             component: () => import('@/views/modules/pkpt/index.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create PKPT',
             component: () => import('@/views/modules/pkpt/Create.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'update/:idPkpt',
             name: 'Update PKPT',
             component: () => import('@/views/modules/pkpt/Update.vue'),
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, restricted: false },
             props: true,
           },
         ],
@@ -485,7 +485,7 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/pages/Login'),
-    meta: { requiresUnauth: true },
+    meta: { requiresUnauth: true, restricted: false },
   },
   {
     path: '/:pathMatch(.*)*',
@@ -504,13 +504,31 @@ const router = createRouter({
   },
 })
 
+import { func } from '@/globalFunctions'
+
 router.beforeEach(function (to, _, next) {
   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    // console.log('TOOO')
+    // console.log(to)
     next('/login')
+  } else if (to.meta.restricted) {
+    console.log('Restricted User To Add')
+    if (func.isNipAllowToAdd()) {
+      next()
+    } else {
+      next('/kap')
+    }
   } else {
     next()
   }
-  // next()
 })
+
+// router.beforeEach(function (to, _, next) {
+//   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+//     next('/login')
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

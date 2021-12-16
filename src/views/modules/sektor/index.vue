@@ -9,6 +9,7 @@
         class="flex mb-3 w-full lg:w-1/2 align-middle justify-start lg:justify-end"
       >
         <button
+          v-if="$func.isNipAllowToAdd()"
           class="text-sm rounded-md tracking-wide bg-green-600 text-white h-10 px-5 hover:bg-green-700 focus:bg-green-700 focus:outline-none"
           @click="$router.push('/sektor/create')"
         >
@@ -149,6 +150,8 @@ export default {
   },
   async mounted() {
     this.loadSektor()
+    // console.log('STATUS NIP')
+    // console.log(this.$func.isNipAllowToAdd())
   },
   methods: {
     async loadSektor() {

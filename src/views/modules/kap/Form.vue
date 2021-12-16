@@ -234,7 +234,8 @@ export default {
   async mounted() {
     this.form.tahun = localStorage.tahun
 
-    this.optionsRendal = await this.$store.dispatch('loadListRendal')
+    // this.optionsRendal = await this.$store.dispatch('loadListRendal')
+    this.optionsRendal = await this.$store.dispatch('loadListUnitKontributor')
 
     if (this.mode == 'create') {
       this.optionsTopik = await this.$store.dispatch('loadTopikKap')
