@@ -755,6 +755,9 @@ export default {
             alignment: 'center',
           },
           {
+            text: data.namaTopik,
+          },
+          {
             text: data.namaKap,
           },
           {
@@ -784,6 +787,12 @@ export default {
       dataShow.unshift([
         {
           text: 'ID',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Nama Topik',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -878,6 +887,7 @@ export default {
             fontSize: 9,
             table: {
               widths: [
+                'auto',
                 'auto',
                 'auto',
                 'auto',

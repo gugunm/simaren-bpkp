@@ -184,7 +184,7 @@ export default {
       const response = await axios({
         method: 'GET',
         baseURL: API_URL,
-        url: '/api/pkpt',
+        url: '/api/exportpkpt',
         params: {
           token: localStorage.getItem('token'),
         },
@@ -197,6 +197,7 @@ export default {
 
       this.jsonFields = {
         ID: 'idPkpt',
+        'Nama Topik': 'namaTopik',
         'Nama KAP': 'namaKap',
         'PJ KAP': 'namaUnitKerjaKap',
         'Rendal Pelaporan': 'namaRendalPelaporan',
@@ -206,7 +207,7 @@ export default {
         'TW Pelaporan Kontributor': 'triwulan',
       }
 
-      this.jsonData = responseData.map((data) => {
+      let cleanData = responseData.map((data) => {
         return {
           ...data,
           namaRendalPelaporan: data.namaRendalPelaporan
@@ -214,6 +215,31 @@ export default {
             : data.namaUnitKerjaPkpt,
         }
       })
+
+      // cleanData = cleanData.slice(0, 10)
+
+      const finalData = []
+      cleanData.forEach((d) => {
+        const topiks = d.topiks.map((topik) => {
+          return {
+            idPkpt: d.idPkpt,
+            namaKap: d.namaKap,
+            namaUnitKerjaKap: d.namaUnitKerjaKap,
+            namaRendalPelaporan: d.namaRendalPelaporan,
+            namaUnitKerjaPkpt: d.namaUnitKerjaPkpt,
+            namaPkpt: d.namaPkpt,
+            namaBidwasPkpt: d.namaBidwasPkpt,
+            triwulan: d.triwulan,
+            ...topik,
+          }
+        })
+        finalData.push(topiks)
+      })
+
+      this.jsonData = finalData.flat()
+
+      console.log('EXPORT PKPT')
+      console.log(finalData.flat())
 
       this.jsonDataCopy = [...this.jsonData]
       this.loading = false

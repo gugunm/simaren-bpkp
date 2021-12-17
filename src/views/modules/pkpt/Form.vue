@@ -146,12 +146,14 @@
               ></CFormTextarea>
             </div>
           </CRow>
-          <CRow class="mb-2" v-if="isUnitPkptPerwakilan">
+          <CRow class="mb-2" v-if="isUnitPkptPerwakilan || isSektorAppd">
             <CFormLabel for="rendal-pelaporan" class="col-sm-3 col-form-label"
               >Rendal Pelaporan<span class="text-red-500">*</span></CFormLabel
             >
             <div class="col-sm-4">
+              <CFormInput v-if="isSektorAppd" value="D302" readonly />
               <VueMultiselect
+                v-else
                 id="rendal-pelaporan"
                 v-model="selectedRendPelaporan"
                 :options="optionsRendPelaporan"
@@ -464,6 +466,7 @@ export default {
   props: ['mode', 'idPkpt'],
   data() {
     return {
+      isSektorAppd: false,
       idKap: null,
       pjKap: null,
       form: this.getEmptyForm(),
@@ -500,6 +503,15 @@ export default {
   watch: {
     selectedKap: function (val) {
       if (val) {
+        // console.log('KAP')
+        // console.log(val)
+        if (val.topiks.some((element) => element.idSektor == 28)) {
+          this.isSektorAppd = true
+          this.form.idRendPelaporan = 339
+        } else {
+          this.isSektorAppd = false
+          this.form.idRendPelaporan = 0
+        }
         this.idKap = val.idKap
         this.pjKap = val.pjKap
         this.getOptionsUnitPkpt()

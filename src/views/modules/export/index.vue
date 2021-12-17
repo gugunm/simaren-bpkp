@@ -49,13 +49,13 @@
           >
             Export Excel
           </export-excel>
-          <!-- <button
+          <button
             @click="exportPdf"
             type="button"
             class="ml-1 w-40 text-white bg-blue-500 rounded py-2 cursor-pointer hover:bg-blue-600"
           >
             Export PDF
-          </button> -->
+          </button>
         </div>
       </CRow>
 

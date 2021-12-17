@@ -47,6 +47,7 @@
       <template #table-row="props">
         <template v-if="props.column.field == 'actions'">
           <CButton
+            v-if="$func.isNipAllowToAdd()"
             color="warning"
             size="sm"
             variant="outline"
@@ -60,6 +61,7 @@
             >Edit</CButton
           >
           <CButton
+            v-if="$func.isNipAllowToAdd()"
             color="danger"
             size="sm"
             variant="outline"

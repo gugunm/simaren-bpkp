@@ -69,7 +69,9 @@
                   <p>{{ topik.deskripsi }}</p>
                 </td>
                 <td width="200px">
-                  <p class="break-all">{{ topik.kontributors.join(',') }}</p>
+                  <p class="break-all">
+                    {{ topik.kontributors.join(',') }}
+                  </p>
                 </td>
               </tr>
             </tbody>
