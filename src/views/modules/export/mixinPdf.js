@@ -754,9 +754,9 @@ export default {
             text: data.idPkpt,
             alignment: 'center',
           },
-          {
-            text: data.namaTopik,
-          },
+          // {
+          //   text: data.namaTopik,
+          // },
           {
             text: data.namaKap,
           },
@@ -791,12 +791,12 @@ export default {
           bold: true,
           alignment: 'center',
         },
-        {
-          text: 'Nama Topik',
-          fontSize: 10,
-          bold: true,
-          alignment: 'center',
-        },
+        // {
+        //   text: 'Nama Topik',
+        //   fontSize: 10,
+        //   bold: true,
+        //   alignment: 'center',
+        // },
         {
           text: 'Nama KAP',
           fontSize: 10,
@@ -887,7 +887,7 @@ export default {
             fontSize: 9,
             table: {
               widths: [
-                'auto',
+                // 'auto',
                 'auto',
                 'auto',
                 'auto',
