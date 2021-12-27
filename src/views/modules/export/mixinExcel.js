@@ -252,5 +252,84 @@ export default {
       this.jsonDataCopy = [...this.jsonData]
       this.loading = false
     },
+
+    async loadSektorToPkpt() {
+      this.loading = true
+      const response = await axios({
+        method: 'GET',
+        baseURL: API_URL,
+        url: '/api/exportpkpt',
+        params: {
+          token: localStorage.getItem('token'),
+        },
+      })
+      const responseData = await response.data
+      if (response.status != 200) {
+        const error = new Error(responseData.message || 'Failed to fetch data')
+        throw error
+      }
+
+      this.jsonFields = {
+        'Id Sektor': 'idSektor',
+        'Nama Sektor': 'namaSektor',
+        'Id Tema': 'idTema',
+        'Nama Tema': 'namaTema',
+        'Id Topik': 'idTopik',
+        'Nama Topik': 'namaTopik',
+        'Id KAP': 'idKap',
+        'Nama KAP': 'namaKap',
+        'PJ KAP': 'namaUnitKerjaKap',
+        'Id PKPT': 'idPkpt',
+        'Nama PKPT': 'namaPkpt',
+        'Unit Kerja PKPT': 'namaUnitKerjaPkpt',
+        'Rendal Pelaporan': 'namaRendalPelaporan',
+        'Bidang Pengawasan': 'namaBidwasPkpt',
+        'TW Pelaporan Kontributor': 'triwulan',
+      }
+
+      /**
+       * Digunakan jika ingin export pkpt dengan menampilkan nama topik
+       */
+      let cleanData = responseData.map((data) => {
+        // this.jsonData = responseData.map((data) => {
+        return {
+          ...data,
+          namaRendalPelaporan: data.namaRendalPelaporan
+            ? data.namaRendalPelaporan
+            : data.namaUnitKerjaPkpt,
+        }
+      })
+
+      // cleanData = cleanData.slice(0, 10)
+
+      /**
+       * Digunakan jika ingin export pkpt dengan menampilkan nama topik
+       */
+      const finalData = []
+      cleanData.forEach((d) => {
+        const topiks = d.topiks.map((topik) => {
+          return {
+            idPkpt: d.idPkpt,
+            idKap: d.idKap,
+            namaKap: d.namaKap,
+            namaUnitKerjaKap: d.namaUnitKerjaKap,
+            namaRendalPelaporan: d.namaRendalPelaporan,
+            namaUnitKerjaPkpt: d.namaUnitKerjaPkpt,
+            namaPkpt: d.namaPkpt,
+            namaBidwasPkpt: d.namaBidwasPkpt,
+            triwulan: d.triwulan,
+            ...topik,
+          }
+        })
+        finalData.push(topiks)
+      })
+      this.jsonData = finalData.flat()
+
+      // console.log('EXPORT PKPT')
+      // console.log(finalData.flat())
+
+      this.jsonDataCopy = [...this.jsonData]
+      this.loading = false
+    },
   },
 }

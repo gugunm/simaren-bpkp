@@ -102,6 +102,10 @@ export default {
           id: 6,
           deskripsi: 'PKPT',
         },
+        // {
+        //   id: 7,
+        //   deskripsi: 'Sektor - PKPT',
+        // },
       ],
       selectedUnitKerja: null,
       optionsUnitKerja: [],
@@ -145,6 +149,10 @@ export default {
           this.loadPkpt()
           this.selectedUnitKerja = this.optionsUnitKerja[0]
           break
+        case 7:
+          this.loadSektorToPkpt()
+          this.selectedUnitKerja = this.optionsUnitKerja[0]
+          break
       }
     },
     selectedUnitKerja: function (val) {
@@ -152,7 +160,7 @@ export default {
         // console.log('DATAA BEFORE FILTER')
         // console.log(this.jsonData.length)
         // this.jsonData = this.jsonDataCopy
-        if (this.selectedJenis.id == 6) {
+        if (this.selectedJenis.id == 6 || this.selectedJenis.id == 7) {
           this.jsonData = this.jsonDataCopy
           this.jsonData = this.jsonData.filter((data) => {
             return data.namaUnitKerjaPkpt == val.alias
