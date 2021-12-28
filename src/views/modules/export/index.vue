@@ -102,10 +102,10 @@ export default {
           id: 6,
           deskripsi: 'PKPT',
         },
-        // {
-        //   id: 7,
-        //   deskripsi: 'Sektor - PKPT',
-        // },
+        {
+          id: 7,
+          deskripsi: 'Sektor - PKPT',
+        },
       ],
       selectedUnitKerja: null,
       optionsUnitKerja: [],
