@@ -22,6 +22,7 @@ export default {
       }
 
       this.jsonFields = {
+        'Id Sektor': 'idSektor',
         'Nama Sektor': 'namaSektor',
         'Informasi Sektor Yang Diharapkan': 'deskripsi',
         'Kedeputian Koord Sektor': 'pjDeputi',
@@ -52,7 +53,9 @@ export default {
       }
 
       this.jsonFields = {
+        'Id Sektor': 'idSektor',
         'Nama Sektor': 'namaSektor',
+        'Id Tema': 'idTema',
         'Nama Tema': 'namaTema',
         'Informasi Tema Yang Diharapkan': 'deskripsi',
         'Kedeputian Koord Tema': 'pjDeputi',
@@ -83,8 +86,11 @@ export default {
       }
 
       this.jsonFields = {
+        'Id Sektor': 'idSektor',
         'Nama Sektor': 'namaSektor',
+        'Id Tema': 'idTema',
         'Nama Tema': 'namaTema',
+        'Id Topik': 'idTopik',
         'Nama Topik': 'namaTopik',
         'Informasi Topik Yang Diharapkan': 'deskripsi',
         'Kedeputian Koord Topik': 'pjDeputi',
@@ -115,7 +121,9 @@ export default {
       }
 
       this.jsonFields = {
+        'Id Topik': 'idTopik',
         'Nama Topik': 'namaTopik',
+        'Id Kontributor': 'idKontributor',
         'Unit Kerja Kontributor': 'unitKontributor',
         'Informasi Kontributor Yang Diharapkan': 'deskripsi',
         'Kedeputian Koord Topik': 'pjDeputi',
@@ -144,8 +152,10 @@ export default {
       }
 
       this.jsonFields = {
+        'Id KAP': 'idKap',
         'Nama KAP': 'namaKap',
         'PJ KAP': 'unitKerjaKap',
+        'Id Topik': 'idTopik',
         'Nama Topik': 'namaTopik',
         'Informasi Yang Diharapkan': 'deskripsi',
         Kontributor: 'kontributors',
@@ -197,14 +207,16 @@ export default {
       }
 
       this.jsonFields = {
-        ID: 'idPkpt',
         // 'Nama Topik': 'namaTopik',
+        'Id KAP': 'idKap',
         'Nama KAP': 'namaKap',
         'PJ KAP': 'namaUnitKerjaKap',
+        'Id PKPT': 'idPkpt',
         'Rendal Pelaporan': 'namaRendalPelaporan',
         'Unit Kerja PKPT': 'namaUnitKerjaPkpt',
         'Nama PKPT': 'namaPkpt',
         'Bidang Pengawasan': 'namaBidwasPkpt',
+        RMP: 'namaRmp',
         'TW Pelaporan Kontributor': 'triwulan',
       }
 
@@ -217,7 +229,7 @@ export default {
           ...data,
           namaRendalPelaporan: data.namaRendalPelaporan
             ? data.namaRendalPelaporan
-            : data.namaUnitKerjaPkpt,
+            : '-',
         }
       })
 
@@ -284,6 +296,7 @@ export default {
         'Unit Kerja PKPT': 'namaUnitKerjaPkpt',
         'Rendal Pelaporan': 'namaRendalPelaporan',
         'Bidang Pengawasan': 'namaBidwasPkpt',
+        RMP: 'namaRmp',
         'TW Pelaporan Kontributor': 'triwulan',
       }
 
@@ -296,7 +309,7 @@ export default {
           ...data,
           namaRendalPelaporan: data.namaRendalPelaporan
             ? data.namaRendalPelaporan
-            : data.namaUnitKerjaPkpt,
+            : '-',
         }
       })
 
@@ -318,6 +331,7 @@ export default {
             namaPkpt: d.namaPkpt,
             namaBidwasPkpt: d.namaBidwasPkpt,
             triwulan: d.triwulan,
+            namaRmp: d.namaRmp,
             ...topik,
           }
         })

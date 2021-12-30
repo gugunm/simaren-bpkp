@@ -92,9 +92,9 @@ import ConfirmDelete from '@/components/simaren/ConfirmDelete.vue'
 
 const columns = [
   {
-    label: 'ID Kontributor',
+    label: 'Id',
     field: 'idKontributor',
-    hidden: true,
+    // hidden: true,
   },
   {
     label: 'Nama Topik',

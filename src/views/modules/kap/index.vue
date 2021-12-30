@@ -189,6 +189,11 @@ import Loading from 'vue3-loading-overlay'
 
 const columns = [
   {
+    label: 'Id',
+    field: 'idKap',
+    // hidden: true,
+  },
+  {
     label: 'Nama KAP',
     field: 'namaKap',
     width: '200px',

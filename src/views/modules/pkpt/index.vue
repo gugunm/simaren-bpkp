@@ -99,9 +99,9 @@ import Loading from 'vue3-loading-overlay'
 
 const columns = [
   {
-    label: 'ID KAP',
+    label: 'Id',
     field: 'idPkpt',
-    hidden: true,
+    // hidden: true,
   },
   {
     label: 'Nama KAP',
@@ -136,6 +136,12 @@ const columns = [
   {
     label: 'Bidang Pengawasan',
     field: 'namaBidwasPkpt',
+    thClass: 'text-sm',
+    tdClass: 'text-sm',
+  },
+  {
+    label: 'RMP',
+    field: 'namaRmp',
     thClass: 'text-sm',
     tdClass: 'text-sm',
   },

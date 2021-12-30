@@ -32,8 +32,11 @@ export default {
       const dataShow = this.jsonData.map((data) => {
         return [
           {
+            text: data.idSektor,
+          },
+          {
             text: data.namaSektor,
-            fontSize: 8,
+            // fontSize: 8,
           },
           {
             text: data.deskripsi,
@@ -51,6 +54,12 @@ export default {
       })
 
       dataShow.unshift([
+        {
+          text: 'Id Sektor',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
         {
           text: 'Nama Sektor',
           fontSize: 10,
@@ -128,7 +137,7 @@ export default {
             color: '#444',
             fontSize: 9,
             table: {
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto'],
+              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
               headerRows: 1,
               keepWithHeaderRows: 1,
               body: dataShow,
@@ -164,8 +173,14 @@ export default {
       const dataShow = this.jsonData.map((data) => {
         return [
           {
+            text: data.idSektor,
+          },
+          {
             text: data.namaSektor,
-            fontSize: 8,
+            // fontSize: 8,
+          },
+          {
+            text: data.idTema,
           },
           {
             text: data.namaTema,
@@ -187,7 +202,19 @@ export default {
 
       dataShow.unshift([
         {
+          text: 'Id Sektor',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
           text: 'Nama Sektor',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Id Tema',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -269,7 +296,16 @@ export default {
             color: '#444',
             fontSize: 9,
             table: {
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+              widths: [
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+              ],
               headerRows: 1,
               keepWithHeaderRows: 1,
               body: dataShow,
@@ -305,11 +341,20 @@ export default {
       const dataShow = this.jsonData.map((data) => {
         return [
           {
+            text: data.idSektor,
+          },
+          {
             text: data.namaSektor,
-            fontSize: 8,
+            // fontSize: 8,
+          },
+          {
+            text: data.idTema,
           },
           {
             text: data.namaTema,
+          },
+          {
+            text: data.idTopik,
           },
           {
             text: data.namaTopik,
@@ -331,13 +376,31 @@ export default {
 
       dataShow.unshift([
         {
+          text: 'Id Sektor',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
           text: 'Nama Sektor',
           fontSize: 10,
           bold: true,
           alignment: 'center',
         },
         {
+          text: 'Id Tema',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
           text: 'Nama Tema',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Id Topik',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -419,7 +482,18 @@ export default {
             color: '#444',
             fontSize: 9,
             table: {
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+              widths: [
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+              ],
               headerRows: 1,
               keepWithHeaderRows: 1,
               body: dataShow,
@@ -454,7 +528,13 @@ export default {
       const dataShow = this.jsonData.map((data) => {
         return [
           {
+            text: data.idTopik,
+          },
+          {
             text: data.namaTopik,
+          },
+          {
+            text: data.idKontributor,
           },
           {
             text: data.unitKontributor,
@@ -476,7 +556,19 @@ export default {
 
       dataShow.unshift([
         {
+          text: 'Id Topik',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
           text: 'Nama Topik',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Id Kontributor',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -558,7 +650,16 @@ export default {
             color: '#444',
             fontSize: 9,
             table: {
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+              widths: [
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+              ],
               headerRows: 1,
               keepWithHeaderRows: 1,
               body: dataShow,
@@ -591,11 +692,16 @@ export default {
       const dataShow = this.jsonData.map((data) => {
         return [
           {
+            text: data.idKap,
+          },
+          {
             text: data.namaKap,
-            fontSize: 8,
           },
           {
             text: data.unitKerjaKap,
+          },
+          {
+            text: data.idTopik,
           },
           {
             text: data.namaTopik,
@@ -611,6 +717,12 @@ export default {
 
       dataShow.unshift([
         {
+          text: 'Id Kap',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
           text: 'Nama Kap',
           fontSize: 10,
           bold: true,
@@ -618,6 +730,12 @@ export default {
         },
         {
           text: 'Unit Kerja',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Id Topik',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -687,7 +805,7 @@ export default {
             color: '#444',
             fontSize: 9,
             table: {
-              widths: ['auto', 'auto', 'auto', 'auto', 200],
+              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 200],
               headerRows: 1,
               keepWithHeaderRows: 1,
               body: dataShow,
@@ -751,7 +869,7 @@ export default {
       const dataShow = this.jsonData.map((data) => {
         return [
           {
-            text: data.idPkpt,
+            text: data.idKap,
             alignment: 'center',
           },
           // {
@@ -762,6 +880,10 @@ export default {
           },
           {
             text: data.namaUnitKerjaKap,
+          },
+          {
+            text: data.idPkpt,
+            alignment: 'center',
           },
           {
             text: data.namaRendalPelaporan,
@@ -778,6 +900,9 @@ export default {
             text: data.namaBidwasPkpt,
           },
           {
+            text: data.namaRmp,
+          },
+          {
             text: data.triwulan,
             alignment: 'center',
           },
@@ -786,7 +911,7 @@ export default {
 
       dataShow.unshift([
         {
-          text: 'ID',
+          text: 'Id Kap',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -805,6 +930,12 @@ export default {
         },
         {
           text: 'PJ KAP',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Id PKPT',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -829,6 +960,12 @@ export default {
         },
         {
           text: 'Bidang Pengawasan',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'RMP',
           fontSize: 10,
           bold: true,
           alignment: 'center',
@@ -888,6 +1025,8 @@ export default {
             table: {
               widths: [
                 // 'auto',
+                'auto',
+                'auto',
                 'auto',
                 'auto',
                 'auto',

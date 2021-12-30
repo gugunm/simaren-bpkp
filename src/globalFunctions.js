@@ -33,7 +33,7 @@ export const func = {
   },
 
   isNipAllowToAdd() {
-    /**
+    // /**
     const nipUserLogin = localStorage.getItem('nipbaru')
     const nipBaru = [
       {
@@ -79,7 +79,7 @@ export const func = {
     })
 
     return listOfNipBaru.some((element) => element == true)
-    */
-    return true
+    //
+    // return true
   },
 }

@@ -4,6 +4,12 @@
     <CCardBody class="p-4">
       <h4 v-if="mode == 'create'" class="h4 mb-4">Tambah Kontributor</h4>
       <h4 v-else-if="mode == 'update'" class="h4 mb-4">Edit Kontributor</h4>
+      <CRow class="mb-3" v-if="mode == 'update'">
+        <CFormLabel for="tahun" class="col-sm-3 col-form-label">ID </CFormLabel>
+        <div class="col-sm-2">
+          <CFormInput v-model="editData.idKontributor" readonly />
+        </div>
+      </CRow>
       <CForm @submit.prevent="submit">
         <CRow class="mb-3">
           <CFormLabel for="tahun" class="col-sm-3 col-form-label"

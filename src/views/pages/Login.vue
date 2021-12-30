@@ -10,9 +10,15 @@
             class="inline-block w-52 lg:w-64 mb-2"
             src="img/simhp/logo-white-login.svg"
           /> -->
-          <h2 class="text-left h2 text-xl lg:text-4xl tracking-wide">
+          <!-- <h2 class="text-left h2 text-xl lg:text-4xl tracking-wide">
             SIMA-Ren
-          </h2>
+          </h2> -->
+          <div class="text-left tracking-wide">
+            <h2 class="h2 text-4xl mb-2">SIMAREN PKPT</h2>
+            <p class="text-base font-light">
+              Badan Pengawasan Keuangan dan Pembangunan
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -39,7 +45,7 @@
             @submit.prevent="submitForm"
           >
             <p class="mb-3 tracking-wide">
-              Silahkan login menggunakan user MAP BPKP
+              Silahkan login menggunakan akun warga BPKP
             </p>
             <div class="flex flex-wrap mb-4">
               <div class="w-full">
