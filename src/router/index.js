@@ -6,6 +6,12 @@ import DefaultLayout from '@/layouts/DefaultLayout'
 
 import store from '../store/index.js'
 
+import { func } from '@/globalFunctions'
+
+// const statusAccessNip = async () => {
+//   return await func.isNipAllowToAdd()
+// }
+
 const routes = [
   {
     path: '/',
@@ -504,16 +510,14 @@ const router = createRouter({
   },
 })
 
-import { func } from '@/globalFunctions'
-
-router.beforeEach(function (to, _, next) {
+router.beforeEach(async function (to, _, next) {
   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
     // console.log('TOOO')
     // console.log(to)
     next('/login')
   } else if (to.meta.restricted) {
-    console.log('Restricted User To Add')
-    if (func.isNipAllowToAdd()) {
+    // console.log('Restricted User To Add')
+    if (await func.isNipAllowToAdd()) {
       next()
     } else {
       next('/kap')

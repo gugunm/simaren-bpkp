@@ -345,5 +345,54 @@ export default {
       this.jsonDataCopy = [...this.jsonData]
       this.loading = false
     },
+
+    async loadKontributorNonPkpt() {
+      this.loading = true
+      const response = await axios({
+        method: 'GET',
+        baseURL: API_URL,
+        url: '/api/kontributorwithnopkpt',
+        params: {
+          token: localStorage.getItem('token'),
+        },
+      })
+
+      const responseData = await response.data
+
+      if (response.status != 200) {
+        const error = new Error(responseData.message || 'Failed to fetch data')
+        throw error
+      }
+
+      this.jsonFields = {
+        'Id Topik': 'idTopik',
+        'Nama Topik': 'namaTopik',
+        'Id KAP': 'idKap',
+        'Nama KAP': 'namaKap',
+        'Unit Kontributor': 'unitKerjaTidakMemilikiPKPT',
+      }
+
+      /**
+       * Digunakan jika ingin export pkpt dengan menampilkan nama topik
+       */
+      const finalData = []
+      responseData.forEach((d) => {
+        const topiks = d.topiks.map((topik) => {
+          return {
+            idKap: d.idKap,
+            namaKap: d.namaKap,
+            ...topik,
+          }
+        })
+        finalData.push(topiks)
+      })
+      this.jsonData = finalData.flat()
+
+      // console.log('EXPORT PKPT')
+      // console.log(finalData.flat())
+
+      this.jsonDataCopy = [...this.jsonData]
+      this.loading = false
+    },
   },
 }

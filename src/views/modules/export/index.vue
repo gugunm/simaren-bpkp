@@ -107,6 +107,10 @@ export default {
           id: 7,
           deskripsi: 'Sektor - PKPT',
         },
+        {
+          id: 8,
+          deskripsi: 'Kontributor Tanpa PKPT',
+        },
       ],
       selectedUnitKerja: null,
       optionsUnitKerja: [],
@@ -152,6 +156,10 @@ export default {
           break
         case 7:
           this.loadSektorToPkpt()
+          this.selectedUnitKerja = this.optionsUnitKerja[0]
+          break
+        case 8:
+          this.loadKontributorNonPkpt()
           this.selectedUnitKerja = this.optionsUnitKerja[0]
           break
       }

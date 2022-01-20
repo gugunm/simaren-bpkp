@@ -9,7 +9,7 @@
         class="flex mb-3 w-full lg:w-1/2 align-middle justify-start lg:justify-end"
       >
         <button
-          v-if="$func.isNipAllowToAdd()"
+          v-if="isShowForNipKhusus"
           class="text-sm rounded-md tracking-wide bg-green-600 text-white h-10 px-5 hover:bg-green-700 focus:bg-green-700 focus:outline-none"
           @click="$router.push('/kap/create')"
         >
@@ -64,7 +64,8 @@
             <tbody>
               <tr v-for="topik in props.row.topiks" :key="topik.idTopik">
                 <td width="150px">
-                  <p>{{ topik.namaTopik }}</p>
+                  <!-- <p>{{ topik.namaTopik }}</p> -->
+                  <p>{{ props.row.topiks.length }}</p>
                 </td>
                 <td width="250px">
                   <p>{{ topik.deskripsi }}</p>
@@ -144,7 +145,7 @@
         </template> -->
         <div v-if="props.column.field == 'actions'" class="text-center">
           <CButton
-            v-if="$func.isNipAllowToAdd()"
+            v-if="isShowForNipKhusus"
             color="warning"
             size="sm"
             variant="outline"
@@ -158,7 +159,7 @@
             >Edit</CButton
           >
           <CButton
-            v-if="$func.isNipAllowToAdd()"
+            v-if="isShowForNipKhusus"
             color="danger"
             size="sm"
             variant="outline"
@@ -245,10 +246,12 @@ export default {
       loading: false,
       isDeleteConfirm: false,
       idToDel: null,
+      isShowForNipKhusus: false,
     }
   },
   async mounted() {
     await this.loadKap()
+    this.isShowForNipKhusus = await this.$func.isNipAllowToAdd()
   },
   methods: {
     async loadKap() {
