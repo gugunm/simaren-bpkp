@@ -19,6 +19,20 @@ export const func = {
     return 'Rp 0'
   },
 
+  thousandSeprator(amount) {
+    if (
+      amount !== '' ||
+      amount !== undefined ||
+      amount !== 0 ||
+      amount !== '0' ||
+      amount !== null
+    ) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    } else {
+      return amount
+    }
+  },
+
   rupiahToNumber: (payload) => {
     return Number(payload.replace(/[^0-9.-]+/g, ''))
   },

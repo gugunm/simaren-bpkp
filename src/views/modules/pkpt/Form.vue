@@ -171,7 +171,7 @@
               </VueMultiselect>
             </div>
           </CRow>
-          <CRow class="mb-2">
+          <CRow class="mb-4">
             <CFormLabel for="hp" class="col-sm-3 col-form-label"
               >HP <span class="text-red-500">*</span></CFormLabel
             >
@@ -179,20 +179,7 @@
               <CFormInput type="number" v-model="form.hp" id="hp" required />
             </div>
           </CRow>
-          <CRow class="mb-2">
-            <CFormLabel for="dana" class="col-sm-3 col-form-label"
-              >Dana <span class="text-red-500">*</span></CFormLabel
-            >
-            <div class="col-sm-4">
-              <CFormInput
-                type="number"
-                v-model="form.dana"
-                id="dana"
-                required
-              />
-            </div>
-          </CRow>
-          <CRow class="mb-2">
+          <!-- <CRow class="mb-2">
             <CFormLabel for="sumber-dana" class="col-sm-3 col-form-label"
               >Sumber Dana <span class="text-red-500">*</span></CFormLabel
             >
@@ -206,6 +193,57 @@
                 track-by="deskripsi"
               >
               </VueMultiselect>
+            </div>
+          </CRow> -->
+          <CRow class="mb-3">
+            <CCol sm="3">
+              <CFormLabel for="sumber-dana" class="col-form-label"
+                >Sumber Dana <span class="text-red-500">*</span></CFormLabel
+              >
+            </CCol>
+            <CCol sm="9">
+              <CRow
+                v-for="itemDana in optionsDana"
+                :key="itemDana.deskripsi"
+                class="mb-2"
+              >
+                <CCol sm="3">
+                  <input
+                    class="mr-3"
+                    type="checkbox"
+                    :id="itemDana.deskripsi"
+                    :value="`${itemDana.deskripsi}#${itemDana.id}`"
+                    v-model="choosenDana"
+                    @change="changeCheckedDana(itemDana)"
+                  />
+                  <label :for="itemDana.deskripsi">{{
+                    itemDana.deskripsi
+                  }}</label>
+                </CCol>
+                <CCol sm="5">
+                  <CFormInput
+                    type="number"
+                    v-model="itemDana.nilai"
+                    :readonly="!itemDana.status"
+                  />
+                </CCol>
+              </CRow>
+            </CCol>
+          </CRow>
+          <!-- <p>{{ choosenDana.join(',') }}</p>
+          <p>{{ optionsDana }}</p> -->
+          <CRow class="mb-2">
+            <CFormLabel for="dana" class="col-sm-3 col-form-label"
+              >Total Dana <span class="text-red-500">*</span></CFormLabel
+            >
+            <div class="col-sm-4">
+              <CFormInput
+                :value="$func.thousandSeprator(totalDana)"
+                id="dana"
+                readonly
+              />
+              <!-- {{ $func.thousandSeprator(totalDana) }} -->
+              <!-- v-model="form.dana" -->
             </div>
           </CRow>
           <CRow class="mb-2">
@@ -397,20 +435,26 @@ import axios from 'axios'
 import VueMultiselect from 'vue-multiselect'
 import Loading from 'vue3-loading-overlay'
 
-const optionsDana = [
-  {
-    id: 52,
-    deskripsi: 'APBN',
-  },
-  {
-    id: 53,
-    deskripsi: 'Mitra',
-  },
-  {
-    id: 1518,
-    deskripsi: 'ABT',
-  },
-]
+// const optionsDana = [
+//   {
+//     id: 52,
+//     deskripsi: 'APBN',
+//     nilai: 0,
+//     status: false,
+//   },
+//   {
+//     id: 53,
+//     deskripsi: 'Mitra',
+//     nilai: 0,
+//     status: false,
+//   },
+//   {
+//     id: 1518,
+//     deskripsi: 'ABT',
+//     nilai: 0,
+//     status: false,
+//   },
+// ]
 
 const optionsRmp = [
   {
@@ -486,8 +530,10 @@ export default {
       optionsKontributor: [],
       selectedBidwas: null,
       optionsBidwas: [],
-      selectedDana: null,
-      optionsDana,
+      // selectedDana: null,
+      refOptionsDana: [],
+      optionsDana: [],
+      choosenDana: [],
       selectedRmp: null,
       optionsRmp,
       selectedUnitPkpt: null,
@@ -555,12 +601,12 @@ export default {
       }
     },
 
-    selectedDana: function (val) {
-      if (val) {
-        this.form.idSumberDana = val.id
-        this.form.namaSumberDana = val.deskripsi
-      }
-    },
+    // selectedDana: function (val) {
+    //   if (val) {
+    //     this.form.idSumberDana = val.id
+    //     this.form.namaSumberDana = val.deskripsi
+    //   }
+    // },
 
     selectedRmp: function (val) {
       if (val) {
@@ -582,6 +628,11 @@ export default {
         return false
       }
     },
+    totalDana() {
+      return this.optionsDana.length > 0
+        ? this.optionsDana.reduce((n, { nilai }) => n + Number(nilai), 0)
+        : 0
+    },
   },
   async mounted() {
     this.form.tahun = localStorage.tahun
@@ -590,6 +641,21 @@ export default {
     // this.optionsKontributor = await this.$store.dispatch(
     //   'loadListUnitKontributor',
     // )
+
+    const resultRefOptionsDana = await this.$store.dispatch(
+      'loadListSumberDana',
+    )
+    this.refOptionsDana = resultRefOptionsDana.map((item) => {
+      return {
+        id: item.idSumberDana,
+        deskripsi: item.namaSumberDana,
+        nilai: 0,
+        status: false,
+      }
+    })
+    this.optionsDana = this.refOptionsDana.slice()
+    // console.log('Sumber Dana')
+    // console.log(this.optionsDana)
 
     if (this.mode == 'update') {
       this.loading = true
@@ -618,9 +684,9 @@ export default {
         return bid.id == this.form.idBidwas
       })[0]
 
-      this.selectedDana = this.optionsDana.filter((d) => {
-        return d.id == this.form.idSumberDana
-      })[0]
+      // this.selectedDana = this.optionsDana.filter((d) => {
+      //   return d.id == this.form.idSumberDana
+      // })[0]
 
       this.selectedRmp = this.optionsRmp.filter((r) => {
         return r.id == this.form.idRmp
@@ -634,6 +700,13 @@ export default {
     }
   },
   methods: {
+    changeCheckedDana(itemDana) {
+      itemDana.status = !itemDana.status
+      if (itemDana.status == false) {
+        itemDana.nilai = 0
+      }
+    },
+
     async getOptionsUnitPkpt() {
       let options = await this.$store.dispatch('loadSelectUnitPkpt', {
         idKap: this.idKap,
@@ -747,17 +820,41 @@ export default {
               },
             })
 
-            if (response.status != 200) {
-              this.error = 'Gagal menyimpan data'
-            } else {
+            const responseDataPkpt = await response.data
+
+            this.optionsDana
+              .filter((item) => {
+                return item.nilai > 0
+              })
+              .forEach(async (dana) => {
+                await axios({
+                  method: 'POST',
+                  baseURL: this.$apiAddress,
+                  url: '/api/danapkpt',
+                  data: {
+                    idPkpt: responseDataPkpt.id_pkpt,
+                    idSumberDana: dana.id,
+                    namaSumberDana: dana.deskripsi,
+                    nilaiSumberDana: dana.nilai,
+                  },
+                  params: {
+                    token: localStorage.getItem('token'),
+                  },
+                })
+              })
+
+            // console.log('RESPONSE DANA')
+            // console.log(responseSaveDana)
+
+            if (response.status == 200) {
               this.loading = false
-              // this.$router.push('/pkpt')
               this.toastSuccess('Berhasil menyimpan data')
+            } else {
+              this.error = 'Gagal menyimpan data'
+              // this.$router.push('/pkpt')
             }
 
-            const responseData = await response.data
-
-            this.pkpts.push(responseData)
+            this.pkpts.push(responseDataPkpt)
             this.reset()
             this.form.tahun = localStorage.tahun
           } else if (this.mode == 'update') {
@@ -805,8 +902,11 @@ export default {
       }
       this.selectedKontributor = null
       this.selectedBidwas = null
-      this.selectedDana = null
+      // this.selectedDana = null
       this.selectedRmp = null
+
+      this.optionsDana = []
+      this.optionsDana = this.refOptionsDana.slice()
     },
 
     getEmptyForm() {
@@ -820,15 +920,15 @@ export default {
         idBidwas: null,
         idRendPelaporan: 0,
         hp: null,
-        dana: null,
-        idSumberDana: null,
+        // dana: this.totalDana,
+        idSumberDana: 52,
         idRmp: null,
         namaRmp: null,
         triwulan: [],
         //auto pas milih id
         namaBidwasPkpt: null,
         namaUnitKerja: null,
-        namaSumberDana: null,
+        // namaSumberDana: null,
       }
     },
 
@@ -848,9 +948,10 @@ export default {
       fd.append('namaBidwasPkpt', this.form.namaBidwasPkpt)
       fd.append('triwulan', this.form.triwulan)
       fd.append('hp', this.form.hp)
-      fd.append('dana', this.form.dana)
+      fd.append('dana', this.totalDana)
       fd.append('idSumberDana', this.form.idSumberDana)
-      fd.append('namaSumberDana', this.form.namaSumberDana)
+      // fd.append('namaSumberDana', this.form.namaSumberDana)
+      fd.append('namaSumberDana', this.choosenDana.join(','))
       fd.append('idRmp', this.form.idRmp)
       fd.append('namaRmp', this.form.namaRmp)
       fd.append('peranPkpt', this.form.peranPkpt)
