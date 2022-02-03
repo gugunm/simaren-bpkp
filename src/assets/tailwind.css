@@ -3,3 +3,18 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.blink-animation span {
+  animation: blink-animation 1s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

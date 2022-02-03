@@ -22,11 +22,14 @@
           class="border-2 w-10/12 lg:w-6/12 transition ml-3 px-3 py-2 rounded-md focus:border-2 text-black text-sm"
           type="text"
           name="search"
-          placeholder="Teks.."
-          v-model="searchTerm"
+          placeholder="teks yang dicari"
+          v-model.lazy="searchTerm"
         />
       </div>
     </div>
+    <p class="italic text-yellow-500 mb-2 text-sm blink-animation">
+      <span>::: press enter untuk mencari</span>
+    </p>
     <vue-good-table
       v-if="rows"
       class="mb-4"
@@ -102,54 +105,90 @@ const columns = [
     label: 'Id',
     field: 'idPkpt',
     // hidden: true,
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Nama KAP',
     field: 'namaKap',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'PJ KAP',
     field: 'namaUnitKerjaKap',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Rendal Pelaporan',
     field: 'namaRendalPelaporan',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Unit Kerja PKPT',
     field: 'namaUnitKerjaPkpt',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Nama PKPT',
     field: 'namaPkpt',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Bidang Pengawasan',
     field: 'namaBidwasPkpt',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'RMP',
     field: 'namaRmp',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'TW Pelaporan Kontributor',
     field: 'triwulan',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Actions',

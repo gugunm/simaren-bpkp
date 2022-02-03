@@ -22,11 +22,14 @@
           class="border-2 w-10/12 lg:w-6/12 transition ml-3 px-3 py-2 rounded-md focus:border-2 text-black text-sm"
           type="text"
           name="search"
-          placeholder="Teks.."
-          v-model="searchTerm"
+          placeholder="teks yang dicari"
+          v-model.lazy="searchTerm"
         />
       </div>
     </div>
+    <p class="italic text-yellow-500 mb-2 text-sm blink-animation">
+      <span>::: press enter untuk mencari</span>
+    </p>
     <vue-good-table
       v-if="rows"
       class="mb-4"
@@ -95,42 +98,70 @@ const columns = [
     label: 'Id',
     field: 'idKontributor',
     // hidden: true,
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Nama Topik',
     field: 'namaTopik',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Unit Kerja Kontributor',
     field: 'unitKontributor',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Informasi Kontributor Yang Diharapkan',
     field: 'deskripsi',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Kedeputian Koord Topik',
     field: 'pjDeputi',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Unit Kerja PJ Topik',
     field: 'unitKerja',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'TW Pelaporan Kontributor',
     field: 'triwulan',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Actions',

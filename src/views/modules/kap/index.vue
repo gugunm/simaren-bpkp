@@ -22,11 +22,14 @@
           class="border-2 w-10/12 lg:w-6/12 transition ml-3 px-3 py-2 rounded-md focus:border-2 text-black text-sm"
           type="text"
           name="search"
-          placeholder="Teks.."
-          v-model="searchTerm"
+          placeholder="teks yang dicari"
+          v-model.lazy="searchTerm"
         />
       </div>
     </div>
+    <p class="italic text-yellow-500 mb-2 text-sm blink-animation">
+      <span>::: press enter untuk mencari</span>
+    </p>
     <vue-good-table
       v-if="rows"
       class="mb-4 text-sm"
@@ -64,8 +67,8 @@
             <tbody>
               <tr v-for="topik in props.row.topiks" :key="topik.idTopik">
                 <td width="150px">
-                  <!-- <p>{{ topik.namaTopik }}</p> -->
-                  <p>{{ props.row.topiks.length }}</p>
+                  <p>{{ topik.namaTopik }}</p>
+                  <!-- <p>{{ props.row.topiks.length }}</p> -->
                 </td>
                 <td width="250px">
                   <p>{{ topik.deskripsi }}</p>
@@ -193,6 +196,10 @@ const columns = [
     label: 'Id',
     field: 'idKap',
     // hidden: true,
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Nama KAP',
@@ -200,18 +207,27 @@ const columns = [
     width: '200px',
     thClass: 'text-sm',
     tdClass: 'text-sm',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'PJ KAP',
     field: 'unitKerjaKap',
     thClass: 'text-sm text-center',
     tdClass: 'text-sm text-center',
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
   },
   {
     label: 'Nama Topik  -  Informasi Yang Diharapkan  -  Kontributor',
     field: 'namaTopik',
     thClass: 'text-sm text-center',
     tdClass: 'text-sm',
+    width: '50%',
   },
   // {
   //   label: 'Informasi Topik Yang Diharapkan',

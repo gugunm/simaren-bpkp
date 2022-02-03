@@ -103,6 +103,8 @@
                 label="namaUnitKontributor"
                 track-by="namaUnitKontributor"
                 :custom-label="viewSelectUnitPkpt"
+                selectLabel=""
+                deselectLabel=""
               >
               </VueMultiselect>
             </div>
@@ -132,6 +134,8 @@
                 placeholder="Pilih Bidwas"
                 label="namaBidwas"
                 track-by="namaBidwas"
+                selectLabel=""
+                deselectLabel=""
               >
               </VueMultiselect>
             </div>
@@ -167,16 +171,35 @@
                 label="namaUnitKontributor"
                 track-by="namaUnitKontributor"
                 :custom-label="viewSelectUnitPkpt"
+                selectLabel=""
+                deselectLabel=""
               >
               </VueMultiselect>
             </div>
           </CRow>
-          <CRow class="mb-4">
+          <CRow class="mb-2">
             <CFormLabel for="hp" class="col-sm-3 col-form-label"
               >HP <span class="text-red-500">*</span></CFormLabel
             >
             <div class="col-sm-2">
               <CFormInput type="number" v-model="form.hp" id="hp" required />
+            </div>
+          </CRow>
+          <CRow class="mb-4">
+            <CFormLabel for="jenis-kegiatan" class="col-sm-3 col-form-label"
+              >Jenis Kegiatan <span class="text-red-500">*</span></CFormLabel
+            >
+            <div class="col-sm-4">
+              <VueMultiselect
+                id="jenis-kegiatan"
+                v-model="selectedJenisKegiatan"
+                :options="optionsJenisKegiatan"
+                placeholder="Pilih Jenis Kegiatan"
+                label="jenisKegiatanName"
+                track-by="jenisKegiatanName"
+                selectLabel=""
+                deselectLabel=""
+              />
             </div>
           </CRow>
           <!-- <CRow class="mb-2">
@@ -231,7 +254,8 @@
             </CCol>
           </CRow>
           <!-- <p>{{ choosenDana.join(',') }}</p>
-          <p>{{ optionsDana }}</p> -->
+          <p>{{ optionsDana }}</p>
+          <p>{{ refOptionsDana }}</p> -->
           <CRow class="mb-2">
             <CFormLabel for="dana" class="col-sm-3 col-form-label"
               >Total Dana <span class="text-red-500">*</span></CFormLabel
@@ -531,6 +555,8 @@ export default {
       selectedBidwas: null,
       optionsBidwas: [],
       // selectedDana: null,
+      optionsJenisKegiatan: [],
+      selectedJenisKegiatan: null,
       refOptionsDana: [],
       optionsDana: [],
       choosenDana: [],
@@ -601,6 +627,13 @@ export default {
       }
     },
 
+    selectedJenisKegiatan: function (val) {
+      if (val) {
+        this.form.jenisKegiatanId = val.jenisKegiatanId
+        this.form.jenisKegiatanName = val.jenisKegiatanName
+      }
+    },
+
     // selectedDana: function (val) {
     //   if (val) {
     //     this.form.idSumberDana = val.id
@@ -642,6 +675,10 @@ export default {
     //   'loadListUnitKontributor',
     // )
 
+    this.optionsJenisKegiatan = await this.$store.dispatch(
+      'loadListJenisKegiatan',
+    )
+
     const resultRefOptionsDana = await this.$store.dispatch(
       'loadListSumberDana',
     )
@@ -653,9 +690,7 @@ export default {
         status: false,
       }
     })
-    this.optionsDana = this.refOptionsDana.slice()
-    // console.log('Sumber Dana')
-    // console.log(this.optionsDana)
+    this.optionsDana = this.refOptionsDana.map((a) => ({ ...a }))
 
     if (this.mode == 'update') {
       this.loading = true
@@ -682,6 +717,10 @@ export default {
       await this.loadBidwas(this.form.idUnitKerja)
       this.selectedBidwas = this.optionsBidwas.filter((bid) => {
         return bid.id == this.form.idBidwas
+      })[0]
+
+      this.selectedJenisKegiatan = this.optionsJenisKegiatan.filter((jenis) => {
+        return jenis.jenisKegiatanId == this.form.jenisKegiatanId
       })[0]
 
       // this.selectedDana = this.optionsDana.filter((d) => {
@@ -902,11 +941,12 @@ export default {
       }
       this.selectedKontributor = null
       this.selectedBidwas = null
+      this.selectedJenisKegiatan = null
       // this.selectedDana = null
       this.selectedRmp = null
 
-      this.optionsDana = []
-      this.optionsDana = this.refOptionsDana.slice()
+      this.choosenDana = []
+      this.optionsDana = this.refOptionsDana.map((a) => ({ ...a }))
     },
 
     getEmptyForm() {
@@ -920,6 +960,8 @@ export default {
         idBidwas: null,
         idRendPelaporan: 0,
         hp: null,
+        jenisKegiatanId: null,
+        jenisKegiatanName: null,
         // dana: this.totalDana,
         idSumberDana: 52,
         idRmp: null,
@@ -948,6 +990,8 @@ export default {
       fd.append('namaBidwasPkpt', this.form.namaBidwasPkpt)
       fd.append('triwulan', this.form.triwulan)
       fd.append('hp', this.form.hp)
+      fd.append('jenisKegiatanId', this.form.jenisKegiatanId)
+      fd.append('jenisKegiatanName', this.form.jenisKegiatanName)
       fd.append('dana', this.totalDana)
       fd.append('idSumberDana', this.form.idSumberDana)
       // fd.append('namaSumberDana', this.form.namaSumberDana)
@@ -992,6 +1036,10 @@ export default {
             namaPkpt: this.editData.namaPkpt,
             idBidwas: this.editData.idBidwas,
             hp: this.editData.hp,
+
+            jenisKegiatanId: this.editData.jenisKegiatanId,
+            jenisKegiatanName: this.editData.jenisKegiatanName,
+
             dana: this.editData.dana,
             idSumberDana: this.editData.idSumberDana,
             idRmp: this.editData.idRmp,

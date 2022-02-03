@@ -116,6 +116,7 @@ export default {
       setTimeout(() => {
         this.$emit('confirm-ok')
       }, 500)
+      this.loading = false
     },
   },
 }
