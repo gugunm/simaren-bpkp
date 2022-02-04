@@ -225,6 +225,7 @@ export default {
         url: '/api/pkpt',
         params: {
           token: localStorage.getItem('token'),
+          // unit: localStorage.getItem('unit'),
         },
       })
       const responseData = await response.data

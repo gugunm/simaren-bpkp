@@ -692,6 +692,7 @@ export default {
     })
     this.optionsDana = this.refOptionsDana.map((a) => ({ ...a }))
 
+    // :::: MOUNTED IF UPDATE ::::
     if (this.mode == 'update') {
       this.loading = true
       await this.loadPkptById()
@@ -731,6 +732,24 @@ export default {
         return r.id == this.form.idRmp
       })[0]
 
+      this.optionsDana = this.optionsDana.map((dana) => {
+        const danaPkpt = this.form.dataDana.find(
+          (d) => d.idSumberDanaPkpt == dana.id,
+        )
+        if (danaPkpt) {
+          // id: 52,
+          // deskripsi: 'APBN',
+          // nilai: 0,
+          // status: false,
+          dana.nilai = danaPkpt.jumlahDanaPkpt
+          dana.status = true
+          // masukin dana yang suda di pilih kedalam choosendana, agar centangnya nyala
+          this.choosenDana.push(`${dana.deskripsi}#${dana.id}`)
+        }
+        return dana
+      })
+
+      //this.form.dataDana
       // console.log('OPTIONS UNIT')
       // console.log(this.optionsUnitPkpt)
       // console.log(this.idKap)
@@ -846,6 +865,7 @@ export default {
         const resultFormData = this.appendToFormData()
 
         try {
+          // ::: POST DATA TO BACKEND :::
           if (this.mode == 'create') {
             this.loading = true
 
@@ -882,9 +902,6 @@ export default {
                 })
               })
 
-            // console.log('RESPONSE DANA')
-            // console.log(responseSaveDana)
-
             if (response.status == 200) {
               this.loading = false
               this.toastSuccess('Berhasil menyimpan data')
@@ -897,6 +914,7 @@ export default {
             this.reset()
             this.form.tahun = localStorage.tahun
           } else if (this.mode == 'update') {
+            // ::: UPDATE DATA TO BACKEND :::
             this.loading = true
 
             const response = await axios({
@@ -908,6 +926,27 @@ export default {
                 token: localStorage.getItem('token'),
               },
             })
+
+            this.optionsDana
+              .filter((item) => {
+                return item.nilai > 0
+              })
+              .forEach(async (dana) => {
+                await axios({
+                  method: 'POST',
+                  baseURL: this.$apiAddress,
+                  url: '/api/danapkpt',
+                  data: {
+                    idPkpt: this.idPkpt,
+                    idSumberDana: dana.id,
+                    namaSumberDana: dana.deskripsi,
+                    nilaiSumberDana: dana.nilai,
+                  },
+                  params: {
+                    token: localStorage.getItem('token'),
+                  },
+                })
+              })
 
             if (response.status != 200) {
               this.error = 'Gagal merubah data'
@@ -1045,6 +1084,8 @@ export default {
             idRmp: this.editData.idRmp,
             triwulan: this.editData.triwulan,
             idRendPelaporan: this.editData.idRendalPelaporan,
+
+            dataDana: this.editData.dataDana,
             //auto pas milih id
             // namaBidwasPkpt: null,
             // namaUnitKerja: null,

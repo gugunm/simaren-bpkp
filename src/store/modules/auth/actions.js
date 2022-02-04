@@ -68,6 +68,7 @@ export default {
       localStorage.setItem('tahun', payload.tahun)
       localStorage.setItem('nip', await responseMap.data.message.user_nip)
       localStorage.setItem('nipbaru', await responseMap.data.message.nipbaru)
+      localStorage.setItem('unit', await responseMap.data.message.key_sort_unit)
 
       timer = setTimeout(function () {
         context.dispatch('autoLogout')
@@ -113,6 +114,7 @@ export default {
     localStorage.removeItem('tahun')
     localStorage.removeItem('nip')
     localStorage.removeItem('nipbaru')
+    localStorage.removeItem('unit')
 
     clearTimeout(timer)
 

@@ -51,6 +51,7 @@ export const func = {
 
   async isNipAllowToAdd() {
     const nipUserLogin = localStorage.getItem('nipbaru').replace(/\s+/g, '')
+    // const nipUserLogin = localStorage.getItem('nipbaru')
 
     const response = await axios({
       method: 'GET',
@@ -66,6 +67,7 @@ export const func = {
     // return backend restricted
     const listOfNipBaru = nipBaru.map((data) => {
       return data.nipBaru.replace(/\s+/g, '') == nipUserLogin ? true : false
+      // return data.nipBaru == nipUserLogin ? true : false
     })
 
     // listOfNipBaru.some((element) => element == true)
