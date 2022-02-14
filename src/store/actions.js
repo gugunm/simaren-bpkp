@@ -266,4 +266,24 @@ export default {
 
     return responseData
   },
+
+  async loadListInfoTopik(context, payload) {
+    const response = await axios({
+      method: 'GET',
+      baseURL: API_URL,
+      url: `/api/infotopik/${payload.idTopik}`,
+      params: {
+        token: localStorage.getItem('token'),
+      },
+    })
+
+    const responseData = await response.data
+
+    if (response.status != 200) {
+      const error = new Error(responseData.message || 'Failed to fetch data')
+      throw error
+    }
+
+    return responseData
+  },
 }

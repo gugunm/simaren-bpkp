@@ -72,7 +72,7 @@
             />
           </div>
         </CRow>
-        <CRow class="mb-3">
+        <!-- <CRow class="mb-3">
           <CFormLabel for="info-topik" class="col-sm-3 col-form-label"
             >Informasi Topik Yang Diharapkan
             <span class="text-red-500">*</span></CFormLabel
@@ -89,6 +89,87 @@
               note : pisahkan informasi topik dengan titik koma ';'
             </p>
           </div>
+        </CRow> -->
+        <CRow class="mb-3">
+          <CCol sm="3">
+            <CFormLabel for="sumber-dana" class="col-form-label"
+              >Informasi Topik Yang Diharapkan<span class="text-red-500"
+                >*</span
+              ></CFormLabel
+            >
+          </CCol>
+          <CCol sm="9">
+            <CRow
+              v-for="item in this.infoTopikList"
+              :key="item.info"
+              class="mb-3"
+            >
+              <!-- <pre>{{ infoTopikList }}</pre> -->
+              <!-- <p class="hidden">{{ index }}</p> -->
+              <CCol sm="8">
+                <CFormTextarea
+                  rows="1"
+                  type="text"
+                  readonly
+                  :value="item.info"
+                />
+              </CCol>
+              <CCol sm="2">
+                <CFormInput
+                  type="number"
+                  id="info"
+                  placeholder="No Urut"
+                  v-model="item.nomorUrut"
+                  readonly
+                />
+              </CCol>
+              <CCol sm="2">
+                <CButton
+                  type="submit"
+                  color="danger"
+                  size=""
+                  shape="rounded-0"
+                  class="w-full text-white"
+                  @click="deleteInfoTopik(item.nomorUrut)"
+                >
+                  Hapus
+                </CButton>
+              </CCol>
+            </CRow>
+            <CForm @submit.prevent="addInfoTopik">
+              <CRow>
+                <CCol sm="8">
+                  <CFormInput
+                    type="text"
+                    id="info"
+                    placeholder="Info"
+                    v-model="infoCurrentTopik"
+                    required
+                  />
+                </CCol>
+                <CCol sm="2">
+                  <CFormInput
+                    type="number"
+                    id="info"
+                    placeholder="No Urut"
+                    v-model="infoNomorUrut"
+                    required
+                  />
+                </CCol>
+                <CCol sm="2">
+                  <CButton
+                    type="submit"
+                    color="primary"
+                    size=""
+                    shape="rounded-0"
+                    class="w-full"
+                  >
+                    Simpan
+                  </CButton>
+                </CCol>
+              </CRow>
+            </CForm>
+          </CCol>
         </CRow>
         <CRow class="mb-3">
           <CFormLabel for="deputi-topik" class="col-sm-3 col-form-label"
@@ -160,6 +241,7 @@
               color="dark"
               @click="$router.push('/topik')"
               class="px-5"
+              shape="rounded-0"
             >
               Batal
             </CButton>
@@ -175,12 +257,19 @@
               class="ml-1 px-5 text-white"
               color="danger"
               @click="reset"
+              shape="rounded-0"
             >
               Reset
             </CButton>
-            <CButton type="submit" color="info" class="px-5 ml-2 text-white">
+            <CButton
+              type="submit"
+              shape="rounded-0"
+              color="info"
+              class="px-5 ml-2 text-white"
+            >
               <div v-if="loading">
-                <CSpinner color="white" size="sm" class="mr-2" /> Simpan
+                <CSpinner color="white" size="sm" class="mr-2" />
+                Simpan
               </div>
               <p v-else>Simpan</p>
             </CButton>
@@ -215,6 +304,9 @@ export default {
       optionsRendal: [],
       optionsTriwulan: [1, 2, 3, 4],
       editData: {},
+      infoTopikList: [],
+      infoCurrentTopik: '',
+      infoNomorUrut: null,
     }
   },
   watch: {
@@ -275,10 +367,37 @@ export default {
         return rend.id == this.form.idUnitKerja
       })
       this.selectedRendal = dataRend[0]
+
+      const infoTopiks = await this.$store.dispatch('loadListInfoTopik', {
+        idTopik: this.idTopik,
+      })
+      this.infoTopikList = infoTopiks.map((item) => {
+        return {
+          // id: item.idInfoTopik,
+          info: item.detailInfoTopik,
+          nomorUrut: item.noUrut,
+        }
+      })
     }
   },
 
   methods: {
+    addInfoTopik() {
+      this.infoTopikList.push({
+        nomorUrut: this.infoNomorUrut,
+        info: this.infoCurrentTopik,
+      })
+      this.infoCurrentTopik = ''
+    },
+
+    deleteInfoTopik(noUrut) {
+      this.infoTopikList.filter((item) => {
+        if (item.nomorUrut == noUrut) {
+          this.infoTopikList.splice(this.infoTopikList.indexOf(item), 1)
+        }
+      })
+    },
+
     async getListTema() {
       this.optionsTema = await this.$store.dispatch('loadListTema', {
         idSektor: this.form.idSektor,
@@ -319,6 +438,29 @@ export default {
               },
             })
 
+            const responseDataTopik = await response.data
+
+            this.infoTopikList.forEach(async (item) => {
+              const dataInfoTopik = {
+                idTopik: responseDataTopik.id,
+                idTema: parseInt(this.form.idTema),
+                idSektor: parseInt(this.form.idSektor),
+                detailInfoTopik: item.info,
+                noUrut: parseInt(item.nomorUrut),
+                nip: localStorage.getItem('nip'),
+              }
+
+              await axios({
+                method: 'POST',
+                baseURL: this.$apiAddress,
+                url: '/api/infotopik',
+                data: dataInfoTopik,
+                params: {
+                  token: localStorage.getItem('token'),
+                },
+              })
+            })
+
             if (response.status != 200) {
               this.error = 'Gagal menyimpan data'
             } else {
@@ -337,6 +479,27 @@ export default {
               params: {
                 token: localStorage.getItem('token'),
               },
+            })
+
+            this.infoTopikList.forEach(async (item) => {
+              const dataInfoTopik = {
+                idTopik: this.idTopik,
+                idTema: parseInt(this.form.idTema),
+                idSektor: parseInt(this.form.idSektor),
+                detailInfoTopik: item.info,
+                noUrut: parseInt(item.nomorUrut),
+                nip: localStorage.getItem('nip'),
+              }
+
+              await axios({
+                method: 'POST',
+                baseURL: this.$apiAddress,
+                url: '/api/infotopik',
+                data: dataInfoTopik,
+                params: {
+                  token: localStorage.getItem('token'),
+                },
+              })
             })
 
             if (response.status != 200) {
@@ -373,7 +536,7 @@ export default {
         idSektor: null,
         idTema: null,
         namaTopik: null,
-        deskripsi: null,
+        // deskripsi: null,
         idKedeputian: null,
         idUnitKerja: null,
         triwulan: null,
@@ -388,7 +551,7 @@ export default {
       fd.append('idSektor', this.form.idSektor)
       fd.append('idTema', this.form.idTema)
       fd.append('namaTopik', this.form.namaTopik)
-      fd.append('deskripsi', this.form.deskripsi)
+      // fd.append('deskripsi', this.form.deskripsi)
       fd.append('idKedeputian', this.form.idKedeputian)
       fd.append('idUnitKerja', this.form.idUnitKerja)
       fd.append('tahun', this.form.tahun)
@@ -419,7 +582,7 @@ export default {
             idSektor: this.editData.idSektor,
             idTema: this.editData.idTema,
             namaTopik: this.editData.namaTopik,
-            deskripsi: this.editData.deskripsi,
+            // deskripsi: this.editData.deskripsi,
             idKedeputian: this.editData.idKedeputian,
             idUnitKerja: this.editData.idUnitKerja,
             triwulan: this.editData.triwulan,
