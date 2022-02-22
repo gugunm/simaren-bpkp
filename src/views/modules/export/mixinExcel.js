@@ -198,6 +198,7 @@ export default {
         // url: '/api/exportpkpt',
         params: {
           token: localStorage.getItem('token'),
+          nip: localStorage.getItem('nip'),
         },
       })
       const responseData = await response.data

@@ -3,6 +3,8 @@ dist/
 node_modules/
 tests/e2e/reports/
 
+.env
+
 # local env files
 .env.local
 .env.*.local

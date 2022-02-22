@@ -36,8 +36,8 @@ export default {
         method: 'POST',
         url: API_URL + '/api/login',
         data: {
-          email: 'admin@admin.com',
-          password: 'password',
+          email: process.env.EMAIL_LARAVEL,
+          password: process.env.PASS_LARAVEL,
         },
         // headers: {
         // 'content-type': 'application/x-www-form-urlencoded',
