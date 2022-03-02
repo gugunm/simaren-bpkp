@@ -559,7 +559,7 @@ export default {
       selectedJenisKegiatan: null,
       refOptionsDana: [],
       optionsDana: [],
-      choosenDana: [],
+      choosenDana: ['APBN#52'],
       selectedRmp: null,
       optionsRmp,
       selectedUnitPkpt: null,
@@ -687,7 +687,7 @@ export default {
         id: item.idSumberDana,
         deskripsi: item.namaSumberDana,
         nilai: 0,
-        status: false,
+        status: item.idSumberDana == 52 ? true : false,
       }
     })
     this.optionsDana = this.refOptionsDana.map((a) => ({ ...a }))
