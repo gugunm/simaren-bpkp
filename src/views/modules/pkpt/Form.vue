@@ -304,6 +304,27 @@
               <!-- <pre>{{ form.triwulan }}</pre> -->
             </div>
           </CRow>
+
+          <!-- Pilih IKK -->
+          <CRow class="mb-4">
+            <CFormLabel for="pilih-ikk" class="col-sm-3 col-form-label"
+              >Pilih IKK <span class="text-red-500">*</span></CFormLabel
+            >
+            <div class="col-sm-4">
+              <VueMultiselect
+                id="pilih-ikk"
+                v-model="selectedIkk"
+                :options="optionsIkk"
+                placeholder="Pilih IKK"
+                label="uraianIkk"
+                track-by="uraianIkk"
+                :custom-label="viewSelectIkk"
+                selectLabel=""
+                deselectLabel=""
+              />
+            </div>
+          </CRow>
+
           <CRow v-if="mode == 'create'" class="mb-4 mt-4 text-center">
             <div class="col-sm-12">
               <CButton
@@ -557,6 +578,8 @@ export default {
       // selectedDana: null,
       optionsJenisKegiatan: [],
       selectedJenisKegiatan: null,
+      optionsIkk: [],
+      selectedIkk: null,
       refOptionsDana: [],
       optionsDana: [],
       choosenDana: ['APBN#52'],
@@ -634,6 +657,13 @@ export default {
       }
     },
 
+    selectedIkk: function (val) {
+      if (val) {
+        this.form.kodeIkk = val.kodeIkk
+        this.form.uraianIkk = val.uraianIkk
+      }
+    },
+
     // selectedDana: function (val) {
     //   if (val) {
     //     this.form.idSumberDana = val.id
@@ -679,6 +709,8 @@ export default {
       'loadListJenisKegiatan',
     )
 
+    this.optionsIkk = await this.$store.dispatch('loadListIkk')
+
     const resultRefOptionsDana = await this.$store.dispatch(
       'loadListSumberDana',
     )
@@ -722,6 +754,10 @@ export default {
 
       this.selectedJenisKegiatan = this.optionsJenisKegiatan.filter((jenis) => {
         return jenis.jenisKegiatanId == this.form.jenisKegiatanId
+      })[0]
+
+      this.selectedIkk = this.optionsIkk.filter((jenis) => {
+        return jenis.kodeIkk == this.form.kodeIkk
       })[0]
 
       // this.selectedDana = this.optionsDana.filter((d) => {
@@ -814,6 +850,10 @@ export default {
       return `${namaUnitKontributor} - ${
         peranPkpt == 1 ? 'Koordinator Topik' : 'Kontributor Topik'
       }`
+    },
+
+    viewSelectIkk({ uraianIkk, unitKerjaIkk }) {
+      return `${uraianIkk} | (${unitKerjaIkk})`
     },
 
     // addPkptLokal() {
@@ -981,6 +1021,7 @@ export default {
       this.selectedKontributor = null
       this.selectedBidwas = null
       this.selectedJenisKegiatan = null
+      this.selectedIkk = null
       // this.selectedDana = null
       this.selectedRmp = null
 
@@ -1001,6 +1042,8 @@ export default {
         hp: null,
         jenisKegiatanId: null,
         jenisKegiatanName: null,
+        kodeIkk: null,
+        uraianIkk: null,
         // dana: this.totalDana,
         idSumberDana: 52,
         idRmp: null,
@@ -1031,6 +1074,8 @@ export default {
       fd.append('hp', this.form.hp)
       fd.append('jenisKegiatanId', this.form.jenisKegiatanId)
       fd.append('jenisKegiatanName', this.form.jenisKegiatanName)
+      fd.append('kodeIkk', this.form.kodeIkk)
+      fd.append('uraianIkk', this.form.uraianIkk)
       fd.append('dana', this.totalDana)
       fd.append('idSumberDana', this.form.idSumberDana)
       // fd.append('namaSumberDana', this.form.namaSumberDana)
@@ -1078,6 +1123,9 @@ export default {
 
             jenisKegiatanId: this.editData.jenisKegiatanId,
             jenisKegiatanName: this.editData.jenisKegiatanName,
+
+            kodeIkk: this.editData.kodeIkk,
+            uraianIkk: this.editData.uraianIkk,
 
             dana: this.editData.dana,
             idSumberDana: this.editData.idSumberDana,
