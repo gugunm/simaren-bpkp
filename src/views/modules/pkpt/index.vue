@@ -111,6 +111,15 @@ const columns = [
     },
   },
   {
+    label: 'Kategori',
+    field: 'kategori',
+    // hidden: true,
+    filterOptions: {
+      enabled: true, // enable filter for this column
+      trigger: 'enter',
+    },
+  },
+  {
     label: 'Nama KAP',
     field: 'namaKap',
     thClass: 'text-sm',

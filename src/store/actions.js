@@ -287,6 +287,27 @@ export default {
     return responseData
   },
 
+  async loadListRo(context, payload) {
+    const response = await axios({
+      method: 'GET',
+      baseURL: API_URL,
+      url: '/api/listrefro',
+      params: {
+        token: localStorage.getItem('token'),
+        idUnitSima: payload.idUnit,
+      },
+    })
+
+    const responseData = await response.data
+
+    if (response.status != 200) {
+      const error = new Error(responseData.message || 'Failed to fetch data')
+      throw error
+    }
+
+    return responseData
+  },
+
   async loadListInfoTopik(context, payload) {
     const response = await axios({
       method: 'GET',
