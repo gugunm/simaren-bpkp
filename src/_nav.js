@@ -1,3 +1,23 @@
+import { API_URL } from './api.js'
+import axios from 'axios'
+
+export const nav = async function () {
+  const response = await axios({
+    method: 'GET',
+    baseURL: API_URL,
+    url: '/api/menusimaren',
+    params: {
+      token: localStorage.getItem('token'),
+      nip: localStorage.getItem('nip'),
+    },
+  })
+
+  const menu = await response.data
+
+  console.log(menu)
+  return menu
+}
+
 export default [
   {
     component: 'CNavItem',

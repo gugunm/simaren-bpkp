@@ -952,10 +952,6 @@ export default {
       return `${uraianIkk} | (${unitKerjaIkk})`
     },
 
-    // viewSelectRo({ kodeRo, uraianRo }) {
-    //   return `${kodeRo} | (${uraianRo})`
-    // },
-
     viewSelectRo({ uraianRo }) {
       return `${uraianRo}`
     },

@@ -200,6 +200,12 @@ const routes = [
         ],
       },
       {
+        path: '/approvepkpt',
+        name: 'Approve PKPT',
+        component: () => import('@/views/modules/approvepkpt/index.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: '/export',
         name: 'Export',
         component: () => import('@/views/modules/export/index.vue'),
