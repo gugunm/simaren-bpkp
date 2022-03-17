@@ -6,7 +6,7 @@ import DefaultLayout from '@/layouts/DefaultLayout'
 
 import store from '../store/index.js'
 
-import { func } from '@/globalFunctions'
+// import { func } from '@/globalFunctions'
 
 // const statusAccessNip = async () => {
 //   return await func.isNipAllowToAdd()
@@ -182,13 +182,13 @@ const routes = [
             path: '',
             name: '',
             component: () => import('@/views/modules/pkpt/index.vue'),
-            meta: { requiresAuth: true, restricted: false },
+            // meta: { requiresAuth: true, restricted: false },
           },
           {
             path: 'create',
             name: 'Create PKPT',
             component: () => import('@/views/modules/pkpt/Create.vue'),
-            meta: { requiresAuth: true, restricted: true },
+            // meta: { requiresAuth: true, restricted: true },
           },
           {
             path: 'update/:idPkpt',
@@ -510,29 +510,29 @@ const router = createRouter({
   },
 })
 
-router.beforeEach(async function (to, _, next) {
-  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-    // console.log('TOOO')
-    // console.log(to)
-    next('/login')
-  } else if (to.meta.restricted) {
-    // console.log('Restricted User To Add')
-    if (await func.isNipAllowToAdd()) {
-      next()
-    } else {
-      next('/kap')
-    }
-  } else {
-    next()
-  }
-})
-
-// router.beforeEach(function (to, _, next) {
+// router.beforeEach(async function (to, _, next) {
 //   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+//     // console.log('TOOO')
+//     // console.log(to)
 //     next('/login')
+//   } else if (to.meta.restricted) {
+//     // console.log('Restricted User To Add')
+//     if (await func.isNipAllowToAdd()) {
+//       next()
+//     } else {
+//       next('/kap')
+//     }
 //   } else {
 //     next()
 //   }
 // })
+
+router.beforeEach(function (to, _, next) {
+  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default router
