@@ -268,7 +268,7 @@
               </CRow>
             </CCol>
           </CRow>
-          <!-- <p>{{ choosenDana.join(',') }}</p> -->
+          <p>{{ choosenDana.join(',') }}</p>
           <!-- <p>{{ optionsDana }}</p>
           <p>{{ refOptionsDana }}</p> -->
           <CRow class="mb-2">
@@ -652,7 +652,7 @@ export default {
       selectedRo: null,
       refOptionsDana: [],
       optionsDana: [],
-      choosenDana: ['APBN#52'],
+      choosenDana: [],
       selectedRmp: null,
       optionsRmp,
       selectedUnitPkpt: null,
@@ -681,7 +681,9 @@ export default {
           this.form.idRendPelaporan = 339
         } else {
           this.isSektorAppd = false
-          this.form.idRendPelaporan = 0
+          if (this.mode == 'create') {
+            this.form.idRendPelaporan = 0
+          }
         }
         this.idKap = val.idKap
         this.pjKap = val.pjKap
@@ -729,11 +731,12 @@ export default {
     },
 
     selectedIkk: function (val) {
+      console.log('SELECTED IKK')
+      console.log(val)
       if (val) {
         this.form.kodeIkk = val.map((item) => {
           return item.kodeIkk
         })
-        // this.form.kodeIkk = val.kodeIkk
       }
     },
 
@@ -799,15 +802,20 @@ export default {
         id: item.idSumberDana,
         deskripsi: item.namaSumberDana,
         nilai: 0,
-        status: item.idSumberDana == 52 ? true : false,
+        status: item.idSumberDana == 52 && this.mode == 'create' ? true : false,
       }
     })
     this.optionsDana = this.refOptionsDana.map((a) => ({ ...a }))
 
     // :::: MOUNTED IF UPDATE ::::
-    if (this.mode == 'update') {
+    if (this.mode == 'create') {
+      this.choosenDana.push('APBN#52')
+    } else if (this.mode == 'update') {
       this.loading = true
       await this.loadPkptById()
+
+      // console.log('FORM')
+      // console.log(this.form)
 
       this.selectedKap = this.optionsKap.filter((kap) => {
         return kap.idKap == this.idKap
@@ -836,18 +844,14 @@ export default {
         return jenis.jenisKegiatanId == this.form.jenisKegiatanId
       })[0]
 
-      this.selectedIkk = this.optionsIkk.filter((jenis) => {
-        return jenis.kodeIkk == this.form.kodeIkk
-      })[0]
+      this.selectedIkk = this.optionsIkk.filter((item) => {
+        return this.form.kodeIkk.includes(item.kodeIkk)
+      })
 
       await this.loadListRo(this.form.idUnitKerja)
       this.selectedRo = this.optionsRo.filter((ro) => {
         return ro.kodeRo == this.form.kodeRo
       })[0]
-
-      // this.selectedDana = this.optionsDana.filter((d) => {
-      //   return d.id == this.form.idSumberDana
-      // })[0]
 
       this.selectedRmp = this.optionsRmp.filter((r) => {
         return r.id == this.form.idRmp
