@@ -91,6 +91,22 @@
             </div>
           </CRow>
           <CRow class="mb-2">
+            <CFormLabel for="info-pkpt" class="col-sm-3 col-form-label"
+              >Informasi Yang Diharapkan<span class="text-red-500"
+                >*</span
+              ></CFormLabel
+            >
+            <div class="col-sm-9">
+              <CFormTextarea
+                id="info-pkpt"
+                rows="3"
+                v-model="infoDiharapkanPkpt"
+                readonly
+                required
+              ></CFormTextarea>
+            </div>
+          </CRow>
+          <CRow class="mb-2">
             <CFormLabel for="unit-kerja" class="col-sm-3 col-form-label"
               >Unit Kerja<span class="text-red-500">*</span></CFormLabel
             >
@@ -141,17 +157,16 @@
             </div>
           </CRow>
           <CRow class="mb-2">
-            <CFormLabel for="info-pkpt" class="col-sm-3 col-form-label"
-              >Informasi Yang Diharapkan<span class="text-red-500"
+            <CFormLabel for="info-pkpt-bidwas" class="col-sm-3 col-form-label"
+              >Informasi Yang Diharapkan level Bidwas<span class="text-red-500"
                 >*</span
               ></CFormLabel
             >
             <div class="col-sm-9">
               <CFormTextarea
-                id="info-pkpt"
+                id="info-pkpt-bidwas"
                 rows="3"
-                v-model="infoDiharapkanPkpt"
-                readonly
+                v-model="form.infoBidwas"
                 required
               ></CFormTextarea>
             </div>
@@ -181,7 +196,7 @@
             <CFormLabel for="hp" class="col-sm-3 col-form-label"
               >HP <span class="text-red-500">*</span></CFormLabel
             >
-            <div class="col-sm-2">
+            <div class="col-sm-3">
               <CFormInput type="number" v-model="form.hp" id="hp" required />
             </div>
           </CRow>
@@ -253,8 +268,8 @@
               </CRow>
             </CCol>
           </CRow>
-          <!-- <p>{{ choosenDana.join(',') }}</p>
-          <p>{{ optionsDana }}</p>
+          <p>{{ choosenDana.join(',') }}</p>
+          <!-- <p>{{ optionsDana }}</p>
           <p>{{ refOptionsDana }}</p> -->
           <CRow class="mb-2">
             <CFormLabel for="dana" class="col-sm-3 col-form-label"
@@ -304,6 +319,79 @@
               <!-- <pre>{{ form.triwulan }}</pre> -->
             </div>
           </CRow>
+
+          <!-- Pilih IKK -->
+          <CRow class="mb-4">
+            <CFormLabel for="pilih-ikk" class="col-sm-3 col-form-label"
+              >Pilih IKK <span class="text-red-500">*</span></CFormLabel
+            >
+            <div class="col-sm-8">
+              <VueMultiselect
+                id="pilih-ikk"
+                v-model="selectedIkk"
+                :options="optionsIkk"
+                :multiple="true"
+                :clear-on-select="false"
+                :preserve-search="true"
+                placeholder="Pilih IKK"
+                label="uraianIkk"
+                track-by="uraianIkk"
+                :custom-label="viewSelectIkk"
+                selectLabel=""
+                deselectLabel=""
+              />
+            </div>
+            <!-- <pre>{{ selectedIkk }}</pre>
+            <pre>{{ form.kodeIkk }}</pre> -->
+          </CRow>
+
+          <!-- Pilih RO -->
+          <CRow class="mb-4">
+            <CFormLabel for="pilih-ro" class="col-sm-3 col-form-label"
+              >Pilih RO <span class="text-red-500">*</span></CFormLabel
+            >
+            <div class="col-sm-8">
+              <VueMultiselect
+                id="pilih-ro"
+                v-model="selectedRo"
+                :options="optionsRo"
+                placeholder="Pilih RO"
+                label="uraianRo"
+                track-by="uraianRo"
+                :custom-label="viewSelectRo"
+                selectLabel=""
+                deselectLabel=""
+              />
+            </div>
+            <!-- <pre>{{ form.kodeRo }}</pre>
+            <pre>{{ form.uraianRo }}</pre> -->
+          </CRow>
+
+          <!-- LOKUS -->
+          <CRow class="mb-4">
+            <CFormLabel for="jumlah-lokus" class="col-sm-3 col-form-label"
+              >Jumlah Lokus <span class="text-red-500">*</span></CFormLabel
+            >
+            <div class="col-sm-4">
+              <CFormInput
+                type="number"
+                id="jumlah-lokus"
+                v-model="form.jumlahLokus"
+                placeholder="Jumlah Lokus"
+                required
+              />
+            </div>
+            <div class="col-sm-4">
+              <CFormInput
+                type="text"
+                id="satuan-lokus"
+                v-model="form.satuanLokus"
+                placeholder="Satuan Lokus"
+                required
+              />
+            </div>
+          </CRow>
+
           <CRow v-if="mode == 'create'" class="mb-4 mt-4 text-center">
             <div class="col-sm-12">
               <CButton
@@ -449,6 +537,7 @@
             </CButton>
           </CCol>
         </CRow>
+        <!-- <pre>{{ form }}</pre> -->
       </CForm>
     </CCardBody>
   </CCard>
@@ -557,9 +646,13 @@ export default {
       // selectedDana: null,
       optionsJenisKegiatan: [],
       selectedJenisKegiatan: null,
+      optionsIkk: [],
+      selectedIkk: null,
+      optionsRo: [],
+      selectedRo: null,
       refOptionsDana: [],
       optionsDana: [],
-      choosenDana: ['APBN#52'],
+      choosenDana: [],
       selectedRmp: null,
       optionsRmp,
       selectedUnitPkpt: null,
@@ -588,7 +681,9 @@ export default {
           this.form.idRendPelaporan = 339
         } else {
           this.isSektorAppd = false
-          this.form.idRendPelaporan = 0
+          if (this.mode == 'create') {
+            this.form.idRendPelaporan = 0
+          }
         }
         this.idKap = val.idKap
         this.pjKap = val.pjKap
@@ -607,6 +702,7 @@ export default {
         this.selectedBidwas = null
         this.optionsBidwas = []
         this.loadBidwas(this.form.idUnitKerja)
+        this.loadListRo(this.form.idUnitKerja)
 
         if (val.namaUnitKontributor.includes('PW')) {
           this.getOptionsRendPelaporan()
@@ -631,6 +727,23 @@ export default {
       if (val) {
         this.form.jenisKegiatanId = val.jenisKegiatanId
         this.form.jenisKegiatanName = val.jenisKegiatanName
+      }
+    },
+
+    selectedIkk: function (val) {
+      console.log('SELECTED IKK')
+      console.log(val)
+      if (val) {
+        this.form.kodeIkk = val.map((item) => {
+          return item.kodeIkk
+        })
+      }
+    },
+
+    selectedRo: function (val) {
+      if (val) {
+        this.form.kodeRo = val.kodeRo
+        this.form.uraianRo = val.uraianRo
       }
     },
 
@@ -679,6 +792,8 @@ export default {
       'loadListJenisKegiatan',
     )
 
+    this.optionsIkk = await this.$store.dispatch('loadListIkk')
+
     const resultRefOptionsDana = await this.$store.dispatch(
       'loadListSumberDana',
     )
@@ -687,15 +802,20 @@ export default {
         id: item.idSumberDana,
         deskripsi: item.namaSumberDana,
         nilai: 0,
-        status: item.idSumberDana == 52 ? true : false,
+        status: item.idSumberDana == 52 && this.mode == 'create' ? true : false,
       }
     })
     this.optionsDana = this.refOptionsDana.map((a) => ({ ...a }))
 
     // :::: MOUNTED IF UPDATE ::::
-    if (this.mode == 'update') {
+    if (this.mode == 'create') {
+      this.choosenDana.push('APBN#52')
+    } else if (this.mode == 'update') {
       this.loading = true
       await this.loadPkptById()
+
+      // console.log('FORM')
+      // console.log(this.form)
 
       this.selectedKap = this.optionsKap.filter((kap) => {
         return kap.idKap == this.idKap
@@ -724,9 +844,14 @@ export default {
         return jenis.jenisKegiatanId == this.form.jenisKegiatanId
       })[0]
 
-      // this.selectedDana = this.optionsDana.filter((d) => {
-      //   return d.id == this.form.idSumberDana
-      // })[0]
+      this.selectedIkk = this.optionsIkk.filter((item) => {
+        return this.form.kodeIkk.includes(item.kodeIkk)
+      })
+
+      await this.loadListRo(this.form.idUnitKerja)
+      this.selectedRo = this.optionsRo.filter((ro) => {
+        return ro.kodeRo == this.form.kodeRo
+      })[0]
 
       this.selectedRmp = this.optionsRmp.filter((r) => {
         return r.id == this.form.idRmp
@@ -747,6 +872,11 @@ export default {
           this.choosenDana.push(`${dana.deskripsi}#${dana.id}`)
         }
         return dana
+      })
+
+      // this.optionsIkk = await this.$store.dispatch('loadListIkk')
+      this.selectedIkk = this.optionsIkk.filter((item) => {
+        return this.form.kodeIkk.includes(item.kodeIkk)
       })
 
       //this.form.dataDana
@@ -806,6 +936,12 @@ export default {
       })
     },
 
+    async loadListRo(id) {
+      this.optionsRo = await this.$store.dispatch('loadListRo', {
+        idUnit: id,
+      })
+    },
+
     viewSelectSearch({ alias, deskripsi }) {
       return `${alias} - ${deskripsi}`
     },
@@ -814,6 +950,14 @@ export default {
       return `${namaUnitKontributor} - ${
         peranPkpt == 1 ? 'Koordinator Topik' : 'Kontributor Topik'
       }`
+    },
+
+    viewSelectIkk({ uraianIkk, unitKerjaIkk }) {
+      return `${uraianIkk} | (${unitKerjaIkk})`
+    },
+
+    viewSelectRo({ uraianRo }) {
+      return `${uraianRo}`
     },
 
     // addPkptLokal() {
@@ -981,6 +1125,8 @@ export default {
       this.selectedKontributor = null
       this.selectedBidwas = null
       this.selectedJenisKegiatan = null
+      this.selectedIkk = null
+      this.selectedRo = null
       // this.selectedDana = null
       this.selectedRmp = null
 
@@ -1001,6 +1147,15 @@ export default {
         hp: null,
         jenisKegiatanId: null,
         jenisKegiatanName: null,
+        kodeIkk: null,
+
+        kodeRo: null,
+        uraianRo: null,
+
+        infoBidwas: null,
+        jumlahLokus: null,
+        satuanLokus: null,
+
         // dana: this.totalDana,
         idSumberDana: 52,
         idRmp: null,
@@ -1031,6 +1186,15 @@ export default {
       fd.append('hp', this.form.hp)
       fd.append('jenisKegiatanId', this.form.jenisKegiatanId)
       fd.append('jenisKegiatanName', this.form.jenisKegiatanName)
+      fd.append('kodeIkk', this.form.kodeIkk.join(','))
+
+      fd.append('kodeRo', this.form.kodeRo)
+      fd.append('uraianRo', this.form.uraianRo)
+
+      fd.append('infoBidwas', this.form.infoBidwas)
+      fd.append('jumlahLokus', this.form.jumlahLokus)
+      fd.append('satuanLokus', this.form.satuanLokus)
+
       fd.append('dana', this.totalDana)
       fd.append('idSumberDana', this.form.idSumberDana)
       // fd.append('namaSumberDana', this.form.namaSumberDana)
@@ -1078,6 +1242,16 @@ export default {
 
             jenisKegiatanId: this.editData.jenisKegiatanId,
             jenisKegiatanName: this.editData.jenisKegiatanName,
+
+            kodeIkk: this.editData.kodeIkk,
+            // uraianIkk: this.editData.uraianIkk,
+
+            kodeRo: this.editData.kodeRo,
+            uraianRo: this.editData.uraianRo,
+
+            infoBidwas: this.editData.infoBidwas,
+            jumlahLokus: this.editData.jumlahLokus,
+            satuanLokus: this.editData.satuanLokus,
 
             dana: this.editData.dana,
             idSumberDana: this.editData.idSumberDana,

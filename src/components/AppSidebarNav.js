@@ -8,7 +8,7 @@ import {
   CNavGroup,
   CNavTitle,
 } from '@coreui/vue'
-import nav from '@/_nav.js'
+import { API_URL } from '@/api.js'
 
 const normalizePath = (path) =>
   decodeURI(path)
@@ -52,9 +52,17 @@ const AppSidebarNav = defineComponent({
   setup() {
     const route = useRoute()
     const firstRender = ref(true)
+    const nav = ref([])
 
     onMounted(() => {
       firstRender.value = false
+      fetch(
+        `${API_URL}/api/menusimaren?nip=${localStorage.getItem(
+          'nip',
+        )}&token=${localStorage.getItem('token')}`,
+      )
+        .then((response) => response.json())
+        .then((data) => (nav.value = data))
     })
 
     const renderItem = (item) => {
@@ -133,9 +141,10 @@ const AppSidebarNav = defineComponent({
         CSidebarNav,
         {},
         {
-          default: () => nav.map((item) => renderItem(item)),
+          default: () => nav.value.map((item) => renderItem(item)),
         },
       )
   },
 })
+
 export { AppSidebarNav }
