@@ -11,7 +11,7 @@
         <button
           v-if="isShowForNipKhusus"
           class="text-sm rounded-md tracking-wide bg-green-600 text-white h-10 px-5 hover:bg-green-700 focus:bg-green-700 focus:outline-none"
-          @click="$router.push('/approvepkpt/approve')"
+          @click="$router.push('/approvepkpt/accrendal')"
         >
           Approve PKPT
         </button>
@@ -56,12 +56,12 @@
             variant="outline"
             @click="
               $router.push({
-                name: 'Approve PKPT',
+                name: 'Approve',
                 params: { idPkpt: props.row.idPkpt },
               })
             "
             class="mx-1"
-            >Approve PKPT</CButton
+            >Approve</CButton
           >
           <CButton
             v-if="isShowForNipKhusus"
@@ -70,7 +70,7 @@
             variant="outline"
             @click="resDelAction(props.row.idPkpt)"
             class="mx-1"
-            >Tolak PKPT</CButton
+            >Tolak</CButton
           >
         </template>
         <template v-if="props.column.field == 'namaRendalPelaporan'">
