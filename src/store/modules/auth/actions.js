@@ -13,8 +13,7 @@ export default {
     })
   },
   async auth(context, payload) {
-    let url = 'https://map.bpkp.go.id/api/v3/login'
-    // let url = API_URL + '/api/login'
+    let url = API_URL + '/api/loginldap'
 
     const responseMap = await axios({
       method: 'POST',
@@ -22,7 +21,8 @@ export default {
       data: qs.stringify({
         username: payload.username,
         password: payload.password,
-        kelas_user: 0,
+        tahun: payload.tahun,
+        // kelas_user: 0,
         // email: payload.email,
         // password: payload.password,
       }),
@@ -32,50 +32,27 @@ export default {
     })
 
     if (responseMap.status == 200) {
-      const response = await axios({
-        method: 'POST',
-        url: API_URL + '/api/login',
-        data: {
-          email: process.env.EMAIL_LARAVEL,
-          password: process.env.PASS_LARAVEL,
-        },
-        // headers: {
-        // 'content-type': 'application/x-www-form-urlencoded',
-        // },
-      })
-
-      const responseData = await response.data
-
-      if (response.status != 200) {
-        const error = new Error(
-          responseData.message ||
-            'Failed to authenticate. Check your login data.',
-        )
-        throw error
-      }
-
-      // ini kalo api nya ngasih property expiresIn
-      // const expiresIn = +responseData.expiresIn * 1000;
-
       // expire login dalam 1 jam
       const expiresIn = 3600000
       const expirationDate = new Date().getTime() + expiresIn
 
-      localStorage.setItem('token', responseData.access_token)
+      const data = responseMap.data
+
+      localStorage.setItem('token', data.access_token)
       localStorage.setItem('tokenExpiration', expirationDate)
-      localStorage.setItem('namaUser', await responseMap.data.message.name)
-      localStorage.setItem('namaUnit', await responseMap.data.message.namaunit)
+      localStorage.setItem('namaUser', await data.name)
+      localStorage.setItem('idunitsima', await data.idUnitSima)
+      localStorage.setItem('namaUnit', await data.namaUnit)
       localStorage.setItem('tahun', payload.tahun)
-      localStorage.setItem('nip', await responseMap.data.message.user_nip)
-      localStorage.setItem('nipbaru', await responseMap.data.message.nipbaru)
-      localStorage.setItem('unit', await responseMap.data.message.key_sort_unit)
+      localStorage.setItem('nip', await data.nipLama)
+      localStorage.setItem('nipbaru', await data.nipBaru)
 
       timer = setTimeout(function () {
         context.dispatch('autoLogout')
       }, expiresIn)
 
       context.commit('setUser', {
-        token: responseData.access_token,
+        token: data.access_token,
         // userId: responseData.message.user_nip,
       })
     }
@@ -110,12 +87,11 @@ export default {
     // localStorage.removeItem('imageLink')
     localStorage.removeItem('tokenExpiration')
     localStorage.removeItem('namaUser')
+    localStorage.removeItem('idunitsima')
     localStorage.removeItem('namaUnit')
     localStorage.removeItem('tahun')
     localStorage.removeItem('nip')
     localStorage.removeItem('nipbaru')
-    localStorage.removeItem('unit')
-
     clearTimeout(timer)
 
     context.commit('setUser', {
