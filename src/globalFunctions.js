@@ -70,7 +70,7 @@ export const func = {
       // return data.nipBaru == nipUserLogin ? true : false
     })
 
-    // listOfNipBaru.some((element) => element == true)
+    listOfNipBaru.some((element) => element == true)
     return listOfNipBaru.some((element) => element == true)
 
     // crud for all user

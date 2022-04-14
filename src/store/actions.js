@@ -254,6 +254,7 @@ export default {
       url: '/api/listjeniskegiatan',
       params: {
         token: localStorage.getItem('token'),
+        nip: localStorage.getItem('nip'),
       },
     })
 
