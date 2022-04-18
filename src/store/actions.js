@@ -247,7 +247,7 @@ export default {
     return responseData
   },
 
-  async loadListJenisKegiatan() {
+  async loadListJenisKegiatan(context, payload) {
     const response = await axios({
       method: 'GET',
       baseURL: API_URL,
@@ -255,6 +255,7 @@ export default {
       params: {
         token: localStorage.getItem('token'),
         nip: localStorage.getItem('nip'),
+        idBidwas: payload.idBidwas,
       },
     })
 

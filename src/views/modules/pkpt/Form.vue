@@ -156,6 +156,7 @@
               </VueMultiselect>
             </div>
           </CRow>
+          <!-- <p>{{ selectedBidwas }}</p> -->
           <CRow class="mb-2">
             <CFormLabel for="info-pkpt-bidwas" class="col-sm-3 col-form-label"
               >Informasi Yang Diharapkan level Bidwas<span class="text-red-500"
@@ -268,7 +269,7 @@
               </CRow>
             </CCol>
           </CRow>
-          <p>{{ choosenDana.join(',') }}</p>
+          <!-- <p>{{ choosenDana.join(',') }}</p> -->
           <!-- <p>{{ optionsDana }}</p>
           <p>{{ refOptionsDana }}</p> -->
           <CRow class="mb-2">
@@ -718,8 +719,10 @@ export default {
 
     selectedBidwas: function (val) {
       if (val) {
+        console.log(this.form)
         this.form.idBidwas = val.id
         this.form.namaBidwasPkpt = val.namaBidwas
+        this.getOptionsJenisKegiatan()
       }
     },
 
@@ -788,9 +791,9 @@ export default {
     //   'loadListUnitKontributor',
     // )
 
-    this.optionsJenisKegiatan = await this.$store.dispatch(
-      'loadListJenisKegiatan',
-    )
+    // this.optionsJenisKegiatan = await this.$store.dispatch(
+    //   'loadListJenisKegiatan', {}
+    // )
 
     this.optionsIkk = await this.$store.dispatch('loadListIkk')
 
@@ -840,6 +843,7 @@ export default {
         return bid.id == this.form.idBidwas
       })[0]
 
+      await this.getOptionsJenisKegiatan()
       this.selectedJenisKegiatan = this.optionsJenisKegiatan.filter((jenis) => {
         return jenis.jenisKegiatanId == this.form.jenisKegiatanId
       })[0]
@@ -911,6 +915,14 @@ export default {
       })
 
       this.optionsUnitPkpt = optionsClean
+    },
+
+    async getOptionsJenisKegiatan() {
+      let options = await this.$store.dispatch('loadListJenisKegiatan', {
+        idBidwas: this.form.idBidwas,
+      })
+
+      this.optionsJenisKegiatan = options
     },
 
     async getOptionsRendPelaporan() {
@@ -1220,6 +1232,9 @@ export default {
         })
 
         this.editData = await response.data
+
+        console.log('DATA')
+        console.log(this.editData)
 
         if (response.status == 200) {
           // console.log('DETAIL PKPT')

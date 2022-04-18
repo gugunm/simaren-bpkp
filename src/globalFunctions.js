@@ -71,9 +71,9 @@ export const func = {
     })
 
     listOfNipBaru.some((element) => element == true)
-    return listOfNipBaru.some((element) => element == true)
+    // return listOfNipBaru.some((element) => element == true)
 
     // crud for all user
-    // return true
+    return true
   },
 }
