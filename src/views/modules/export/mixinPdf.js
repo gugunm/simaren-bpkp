@@ -906,6 +906,12 @@ export default {
             text: data.triwulan,
             alignment: 'center',
           },
+          {
+            text: data.sumberDana,
+          },
+          {
+            text: data.jumlahDana,
+          },
         ]
       })
 
@@ -976,6 +982,18 @@ export default {
           bold: true,
           alignment: 'center',
         },
+        {
+          text: 'Sumber Dana',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Jumlah Dana',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
       ])
 
       const docDef = {
@@ -1025,6 +1043,8 @@ export default {
             table: {
               widths: [
                 // 'auto',
+                'auto',
+                'auto',
                 'auto',
                 'auto',
                 'auto',
