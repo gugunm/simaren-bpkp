@@ -219,10 +219,6 @@ export default {
         'Bidang Pengawasan': 'namaBidwasPkpt',
         RMP: 'namaRmp',
         'TW Pelaporan Kontributor': 'triwulan',
-        'Sumber Dana APBN': 'pembebananDana[0].jumlahDanaPkpt',
-        'Sumber Dana Mitra': 'pembebananDana[1].jumlahDanaPkpt',
-        'Sumber Dana ABT': 'pembebananDana[2].jumlahDanaPkpt',
-
         'Sumber Dana': 'sumberDana',
         'Jumlah Dana': 'jumlahDana',
       }
