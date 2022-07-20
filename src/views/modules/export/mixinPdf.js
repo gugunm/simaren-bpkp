@@ -872,9 +872,6 @@ export default {
             text: data.idKap,
             alignment: 'center',
           },
-          // {
-          //   text: data.namaTopik,
-          // },
           {
             text: data.namaKap,
           },
@@ -912,6 +909,12 @@ export default {
           {
             text: data.jumlahDana,
           },
+          {
+            text: data.kdRo,
+          },
+          {
+            text: data.namaRo,
+          },
         ]
       })
 
@@ -922,12 +925,6 @@ export default {
           bold: true,
           alignment: 'center',
         },
-        // {
-        //   text: 'Nama Topik',
-        //   fontSize: 10,
-        //   bold: true,
-        //   alignment: 'center',
-        // },
         {
           text: 'Nama KAP',
           fontSize: 10,
@@ -994,6 +991,18 @@ export default {
           bold: true,
           alignment: 'center',
         },
+        {
+          text: 'Kode RO',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Nama RO',
+          fontSize: 10,
+          bold: true,
+          alignment: 'center',
+        },
       ])
 
       const docDef = {
@@ -1042,7 +1051,8 @@ export default {
             fontSize: 9,
             table: {
               widths: [
-                // 'auto',
+                'auto',
+                'auto',
                 'auto',
                 'auto',
                 'auto',

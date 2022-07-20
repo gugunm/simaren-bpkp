@@ -221,6 +221,8 @@ export default {
         'TW Pelaporan Kontributor': 'triwulan',
         'Sumber Dana': 'sumberDana',
         'Jumlah Dana': 'jumlahDana',
+        'Kode RO': 'kdRo',
+        'Nama RO': 'namaRo',
       }
 
       /**
